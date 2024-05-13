@@ -1,0 +1,51 @@
+! Command: show startup-config
+! Startup-config last modified at Sun May 12 22:33:24 2024 by admin
+! device: Spine-2 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+hostname Spine-2
+!
+spanning-tree mode mstp
+!
+interface Ethernet1
+   description Link_to_Leaf1
+   no switchport
+   ip address 10.1.21.1/30
+!
+interface Ethernet2
+   description Link_to_Leaf2
+   no switchport
+   ip address 10.1.22.1/30
+!
+interface Ethernet3
+   description Link_to_Leaf3
+   no switchport
+   ip address 10.1.23.1/30
+!
+interface Ethernet4
+   shutdown
+!
+interface Ethernet5
+   shutdown
+!
+interface Ethernet6
+   shutdown
+!
+interface Ethernet7
+   shutdown
+!
+interface Loopback0
+   ip address 10.1.0.2/32
+!
+interface Management1
+!
+no ip routing
+!
+end

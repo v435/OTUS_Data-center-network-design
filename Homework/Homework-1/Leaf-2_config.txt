@@ -1,0 +1,49 @@
+! Command: show startup-config
+! Startup-config last modified at Sun May 12 22:33:48 2024 by admin
+! device: Leaf-2 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+hostname Leaf-2
+!
+spanning-tree mode mstp
+!
+interface Ethernet1
+   description Link_to_Spine1
+   no switchport
+   ip address 10.1.12.2/30
+!
+interface Ethernet2
+   description Link_to_Spine2
+   no switchport
+   ip address 10.1.22.2/30
+!
+interface Ethernet3
+   shutdown
+!
+interface Ethernet4
+   shutdown
+!
+interface Ethernet5
+   shutdown
+!
+interface Ethernet6
+   shutdown
+!
+interface Ethernet7
+   description Link_to_Client2
+!
+interface Loopback0
+   ip address 10.1.1.2/32
+!
+interface Management1
+!
+ip routing
+!
+end
