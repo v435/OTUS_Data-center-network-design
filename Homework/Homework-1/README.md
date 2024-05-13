@@ -330,3 +330,8 @@ Gateway of last resort is not set
 ```
 
 ## Конфигурационные файлы
+[Spine-1_config.txt](Spine-1_config.txt)
+[Spine-2_config.txt](Spine-2_config.txt)
+[Leaf-1_config.txt](Leaf-1_config.txt)
+[Leaf-2_config.txt](Leaf-2_config.txt)
+[Leaf-3_config.txt](Leaf-3_config.txt)
