@@ -1165,3 +1165,5 @@ Leaf-3#ping 10.1.1.2 repeat 1
 PING 10.1.1.2 (10.1.1.2) 72(100) bytes of data.
 80 bytes from 10.1.1.2: icmp_seq=1 ttl=63 time=6.20 ms
 ```
+
+Все Loopback-адреса доступны со всех устройств. Задание выполнено.
