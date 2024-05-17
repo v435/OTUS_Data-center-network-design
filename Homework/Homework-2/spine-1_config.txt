@@ -1,0 +1,72 @@
+! Command: show running-config
+! device: Spine-1 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+hostname Spine-1
+!
+spanning-tree mode mstp
+!
+interface Ethernet1
+   description Link_to_Leaf1
+   no switchport
+   ip address 10.1.11.1/30
+   bfd static neighbor 10.1.11.2
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 sLA+2FFrYhQ=
+!
+interface Ethernet2
+   description Link_to_Leaf2
+   no switchport
+   ip address 10.1.12.1/30
+   bfd static neighbor 10.1.12.2
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 46s8sdx+5hA=
+!
+interface Ethernet3
+   description Link_to_Leaf3
+   no switchport
+   ip address 10.1.13.1/30
+   bfd static neighbor 10.1.13.2
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 46s8sdx+5hA=
+!
+interface Ethernet4
+   shutdown
+!
+interface Ethernet5
+   shutdown
+!
+interface Ethernet6
+   shutdown
+!
+interface Ethernet7
+   shutdown
+!
+interface Loopback0
+   ip address 10.1.0.1/32
+   ip ospf area 0.0.0.0
+!
+interface Management1
+!
+ip routing
+!
+router ospf 1
+   router-id 10.1.0.1
+   bfd default
+   passive-interface Loopback0
+   max-lsa 12000
+!
+end

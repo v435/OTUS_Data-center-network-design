@@ -1,5 +1,4 @@
-! Command: show startup-config
-! Startup-config last modified at Sun May 12 22:33:24 2024 by admin
+! Command: show running-config
 ! device: Spine-2 (vEOS-lab, EOS-4.29.2F)
 !
 ! boot system flash:/vEOS-lab.swi
@@ -18,16 +17,31 @@ interface Ethernet1
    description Link_to_Leaf1
    no switchport
    ip address 10.1.21.1/30
+   bfd static neighbor 10.1.21.2
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 sLA+2FFrYhQ=
 !
 interface Ethernet2
    description Link_to_Leaf2
    no switchport
    ip address 10.1.22.1/30
+   bfd static neighbor 10.1.22.2
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 46s8sdx+5hA=
 !
 interface Ethernet3
    description Link_to_Leaf3
    no switchport
    ip address 10.1.23.1/30
+   bfd static neighbor 10.1.23.2
+   ip ospf network point-to-point
+   ip ospf authentication message-digest
+   ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 46s8sdx+5hA=
 !
 interface Ethernet4
    shutdown
@@ -43,9 +57,16 @@ interface Ethernet7
 !
 interface Loopback0
    ip address 10.1.0.2/32
+   ip ospf area 0.0.0.0
 !
 interface Management1
 !
 ip routing
+!
+router ospf 1
+   router-id 10.1.0.2
+   bfd default
+   passive-interface Loopback0
+   max-lsa 12000
 !
 end
