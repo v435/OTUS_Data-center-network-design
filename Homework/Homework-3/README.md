@@ -478,6 +478,103 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
 ```
 С BFD-сессиями все в порядке.
 
+##### Проверка базы данных состояния каналов Level-2
+```
+Spine-1#show isis database detail 
+
+IS-IS Instance: OTUS VRF: default
+  IS-IS Level 2 Link State Database
+    LSPID                   Seq Num  Cksum  Life Length IS Flags
+    Spine-1.00-00                 8  26499  1171    184 L2 <>
+      LSP generation remaining wait time: 0 ms
+      Time remaining until refresh: 871 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.13.1
+      Interface address: 10.1.12.1
+      Interface address: 10.1.11.1
+      Interface address: 10.1.0.1
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Spine-2.00-00                 8  42727  1174    184 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.1
+      Interface address: 10.1.22.1
+      Interface address: 10.1.21.1
+      Interface address: 10.1.0.2
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-1.00-00                  6   5789  1144    159 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.21.2
+      Interface address: 10.1.11.2
+      Interface address: 10.1.1.1
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-2.00-00                  6  27046  1164    159 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.22.2
+      Interface address: 10.1.12.2
+      Interface address: 10.1.1.2
+      IS Neighbor          : Spine-1.00          Metric: 10
+      IS Neighbor          : Spine-2.00          Metric: 10
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-3.00-00                  6   5507  1174    159 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-3
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.2
+      Interface address: 10.1.13.2
+      Interface address: 10.1.1.3
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.3/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.3 Flags: []
+        Area leader priority: 250 algorithm: 0
+```
+Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
+
 ##### Проверка таблицы маршрутизации
 ```
 Spine-1#show ip route
@@ -708,6 +805,103 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
 ```
 С BFD-сессиями все в порядке.
 
+##### Проверка базы данных состояния каналов Level-2
+```
+Spine-2#show isis database detail 
+
+IS-IS Instance: OTUS VRF: default
+  IS-IS Level 2 Link State Database
+    LSPID                   Seq Num  Cksum  Life Length IS Flags
+    Spine-1.00-00                 8  26499   961    184 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.13.1
+      Interface address: 10.1.12.1
+      Interface address: 10.1.11.1
+      Interface address: 10.1.0.1
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Spine-2.00-00                 8  42727   964    184 L2 <>
+      LSP generation remaining wait time: 0 ms
+      Time remaining until refresh: 664 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.1
+      Interface address: 10.1.22.1
+      Interface address: 10.1.21.1
+      Interface address: 10.1.0.2
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-1.00-00                  6   5789   934    159 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.21.2
+      Interface address: 10.1.11.2
+      Interface address: 10.1.1.1
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-2.00-00                  6  27046   954    159 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.22.2
+      Interface address: 10.1.12.2
+      Interface address: 10.1.1.2
+      IS Neighbor          : Spine-1.00          Metric: 10
+      IS Neighbor          : Spine-2.00          Metric: 10
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-3.00-00                  6   5507   964    159 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-3
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.2
+      Interface address: 10.1.13.2
+      Interface address: 10.1.1.3
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.3/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.3 Flags: []
+        Area leader priority: 250 algorithm: 0
+```
+Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
+
 ##### Проверка таблицы маршрутизации
 ```
 Spine-2#show ip route
@@ -898,6 +1092,103 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
          NA       No Diagnostic       Up
 ```
 С BFD-сессиями все в порядке.
+
+##### Проверка базы данных состояния каналов Level-2
+```
+Leaf-1#show isis database detail 
+
+IS-IS Instance: OTUS VRF: default
+  IS-IS Level 2 Link State Database
+    LSPID                   Seq Num  Cksum  Life Length IS Flags
+    Spine-1.00-00                 8  26499   888    184 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.13.1
+      Interface address: 10.1.12.1
+      Interface address: 10.1.11.1
+      Interface address: 10.1.0.1
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Spine-2.00-00                 8  42727   891    184 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.1
+      Interface address: 10.1.22.1
+      Interface address: 10.1.21.1
+      Interface address: 10.1.0.2
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-1.00-00                  6   5789   861    159 L2 <>
+      LSP generation remaining wait time: 0 ms
+      Time remaining until refresh: 561 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.21.2
+      Interface address: 10.1.11.2
+      Interface address: 10.1.1.1
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-2.00-00                  6  27046   881    159 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.22.2
+      Interface address: 10.1.12.2
+      Interface address: 10.1.1.2
+      IS Neighbor          : Spine-1.00          Metric: 10
+      IS Neighbor          : Spine-2.00          Metric: 10
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-3.00-00                  6   5507   891    159 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-3
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.2
+      Interface address: 10.1.13.2
+      Interface address: 10.1.1.3
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.3/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.3 Flags: []
+        Area leader priority: 250 algorithm: 0
+```
+Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
 
 ##### Проверка таблицы маршрутизации
 ```
@@ -1091,6 +1382,103 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
 ```
 С BFD-сессиями все в порядке.
 
+##### Проверка базы данных состояния каналов Level-2
+```
+Leaf-2#show isis database detail 
+
+IS-IS Instance: OTUS VRF: default
+  IS-IS Level 2 Link State Database
+    LSPID                   Seq Num  Cksum  Life Length IS Flags
+    Spine-1.00-00                 8  26499   783    184 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.13.1
+      Interface address: 10.1.12.1
+      Interface address: 10.1.11.1
+      Interface address: 10.1.0.1
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Spine-2.00-00                 8  42727   787    184 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.1
+      Interface address: 10.1.22.1
+      Interface address: 10.1.21.1
+      Interface address: 10.1.0.2
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-1.00-00                  6   5789   774    159 L2 <>
+      Remaining lifetime received: 1182 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.21.2
+      Interface address: 10.1.11.2
+      Interface address: 10.1.1.1
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-2.00-00                  6  27046   776    159 L2 <>
+      LSP generation remaining wait time: 0 ms
+      Time remaining until refresh: 476 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.22.2
+      Interface address: 10.1.12.2
+      Interface address: 10.1.1.2
+      IS Neighbor          : Spine-1.00          Metric: 10
+      IS Neighbor          : Spine-2.00          Metric: 10
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-3.00-00                  6   5507   787    159 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-3
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.2
+      Interface address: 10.1.13.2
+      Interface address: 10.1.1.3
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.3/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.3 Flags: []
+        Area leader priority: 250 algorithm: 0
+```
+Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
+
 ##### Проверка таблицы маршрутизации
 ```
 Leaf-2#show ip route
@@ -1281,6 +1669,103 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
          NA       No Diagnostic       Up
 ```
 С BFD-сессиями все в порядке.
+
+##### Проверка базы данных состояния каналов Level-2
+```
+Leaf-3#show isis database detail 
+
+IS-IS Instance: OTUS VRF: default
+  IS-IS Level 2 Link State Database
+    LSPID                   Seq Num  Cksum  Life Length IS Flags
+    Spine-1.00-00                 8  26499   731    184 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.13.1
+      Interface address: 10.1.12.1
+      Interface address: 10.1.11.1
+      Interface address: 10.1.0.1
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Spine-2.00-00                 8  42727   734    184 L2 <>
+      Remaining lifetime received: 1199 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Spine-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.1
+      Interface address: 10.1.22.1
+      Interface address: 10.1.21.1
+      Interface address: 10.1.0.2
+      IS Neighbor          : Leaf-3.00           Metric: 10
+      IS Neighbor          : Leaf-2.00           Metric: 10
+      IS Neighbor          : Leaf-1.00           Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.0.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.0.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-1.00-00                  6   5789   731    159 L2 <>
+      Remaining lifetime received: 1173 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-1
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.21.2
+      Interface address: 10.1.11.2
+      Interface address: 10.1.1.1
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.21.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.11.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.1/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.1 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-2.00-00                  6  27046   731    159 L2 <>
+      Remaining lifetime received: 1193 s Modified to: 1200 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-2
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.22.2
+      Interface address: 10.1.12.2
+      Interface address: 10.1.1.2
+      IS Neighbor          : Spine-1.00          Metric: 10
+      IS Neighbor          : Spine-2.00          Metric: 10
+      Reachability         : 10.1.22.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.12.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.2/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.2 Flags: []
+        Area leader priority: 250 algorithm: 0
+    Leaf-3.00-00                  6   5507   734    159 L2 <>
+      LSP generation remaining wait time: 0 ms
+      Time remaining until refresh: 434 s
+      NLPID: 0xCC(IPv4)
+      Hostname: Leaf-3
+      Authentication mode: SHA Key id: 1 Length: 35
+      Area addresses: 49.0001
+      Interface address: 10.1.23.2
+      Interface address: 10.1.13.2
+      Interface address: 10.1.1.3
+      IS Neighbor          : Spine-2.00          Metric: 10
+      IS Neighbor          : Spine-1.00          Metric: 10
+      Reachability         : 10.1.23.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.13.0/30 Metric: 10 Type: 1 Up
+      Reachability         : 10.1.1.3/32 Metric: 10 Type: 1 Up
+      Router Capabilities: Router Id: 10.1.1.3 Flags: []
+        Area leader priority: 250 algorithm: 0
+```
+Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
 
 ##### Проверка таблицы маршрутизации
 ```
