@@ -1,18 +1,112 @@
 # Домашнее задание 3 (Построение Underlay-сети на базе Integrated IS-IS)
 
+## Содержание
+<!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
+
+- [Цель домашней работы](#-)
+- [Задача](#task)
+- [Топология](#-1)
+- [IP-план](#ip-)
+   * [Loopbacks](#loopbacks)
+   * [Leaf-Spine Interconnections](#leaf-spine-interconnections)
+- [План работы](#--1)
+   * [Требования](#-2)
+- [Выполнение работы](#--2)
+   * [Шаг 1. Проверка стыковочных связей](#-1-)
+      + [Spine-1](#spine-1)
+         - [ping Leaf-1](#ping-leaf-1)
+         - [ping Leaf-2](#ping-leaf-2)
+         - [ping Leaf-3](#ping-leaf-3)
+      + [Spine-2](#spine-2)
+         - [ping Leaf-1](#ping-leaf-1-1)
+         - [ping Leaf-2](#ping-leaf-2-1)
+         - [ping Leaf-3](#ping-leaf-3-1)
+   * [Шаг 2. Настройка IS-IS и BFD](#-2-is-is-bfd)
+      + [Spine-1](#spine-1-1)
+      + [Spine-2](#spine-2-1)
+      + [Leaf-1](#leaf-1)
+      + [Leaf-2](#leaf-2)
+      + [Leaf-3](#leaf-3)
+   * [Верификация состояния IS-IS и BFD](#-is-is-bfd)
+      + [Spine-1](#spine-1-2)
+         - [Проверка состояния процесса IS-IS](#-is-is)
+         - [Проверка состояния IS-IS на интерфейсах](#-is-is-)
+            * [Loopback 0](#loopback-0)
+            * [Ethernet 1](#ethernet-1)
+            * [Ethernet 2](#ethernet-2)
+            * [Ethernet 3](#ethernet-3)
+         - [Проверка состояния соседей](#--3)
+         - [Проверка состояния сессий BFD](#-bfd)
+         - [Проверка базы данных состояния каналов Level-2](#-level-2)
+         - [Проверка таблицы маршрутизации](#--4)
+      + [Spine-2](#spine-2-2)
+         - [Проверка состояния процесса IS-IS](#-is-is-1)
+         - [Проверка состояния IS-IS на интерфейсах](#-is-is--1)
+            * [Loopback 0](#loopback-0-1)
+            * [Ethernet 1](#ethernet-1-1)
+            * [Ethernet 2](#ethernet-2-1)
+            * [Ethernet 3](#ethernet-3-1)
+         - [Проверка состояния соседей](#--5)
+         - [Проверка состояния сессий BFD](#-bfd-1)
+         - [Проверка базы данных состояния каналов Level-2](#-level-2-1)
+         - [Проверка таблицы маршрутизации](#--6)
+      + [Leaf-1](#leaf-1-1)
+         - [Проверка состояния процесса IS-IS](#-is-is-2)
+         - [Проверка состояния IS-IS на интерфейсах](#-is-is--2)
+            * [Loopback 0](#loopback-0-2)
+            * [Ethernet 1](#ethernet-1-2)
+            * [Ethernet 2](#ethernet-2-2)
+         - [Проверка состояния соседей](#--7)
+         - [Проверка состояния сессий BFD](#-bfd-2)
+         - [Проверка базы данных состояния каналов Level-2](#-level-2-2)
+         - [Проверка таблицы маршрутизации](#--8)
+      + [Leaf-2](#leaf-2-1)
+         - [Проверка состояния процесса IS-IS](#-is-is-3)
+         - [Проверка состояния IS-IS на интерфейсах](#-is-is--3)
+            * [Loopback 0](#loopback-0-3)
+            * [Ethernet 1](#ethernet-1-3)
+            * [Ethernet 2](#ethernet-2-3)
+         - [Проверка состояния соседей](#--9)
+         - [Проверка состояния сессий BFD](#-bfd-3)
+         - [Проверка базы данных состояния каналов Level-2](#-level-2-3)
+         - [Проверка таблицы маршрутизации](#--10)
+      + [Leaf-3](#leaf-3-1)
+         - [Проверка состояния процесса IS-IS](#-is-is-4)
+         - [Проверка состояния IS-IS на интерфейсах](#-is-is--4)
+            * [Loopback 0](#loopback-0-4)
+            * [Ethernet 1](#ethernet-1-4)
+            * [Ethernet 2](#ethernet-2-4)
+         - [Проверка состояния соседей](#--11)
+         - [Проверка состояния сессий BFD](#-bfd-4)
+         - [Проверка базы данных состояния каналов Level-2](#-level-2-4)
+         - [Проверка таблицы маршрутизации](#--12)
+   * [Проверка достижимости loopback-адресов](#-loopback-)
+      + [Spine-1](#spine-1-3)
+      + [Spine-2](#spine-2-3)
+      + [Leaf-1](#leaf-1-2)
+      + [Leaf-2](#leaf-2-2)
+      + [Leaf-3](#leaf-3-2)
+
+<!-- TOC end -->
+
+<!-- TOC --><a name="-"></a>
 ## Цель домашней работы
 Построение Underlay-сети для ЦОД с использованием IGP-протокола Integrated IS-IS в качестве протокола динамической маршрутизации.
 
 ⚠️ __Примечание:__ В рамках данного документа (выполнения работы) термин IS-IS следует считать равнозначным термину Integrated IS-IS.
 
+<!-- TOC --><a name="task"></a>
 ## Задача
 Обеспечить связность между Loopback-адресами для всех Spine- и Leaf-коммутаторов.
 
+<!-- TOC --><a name="-1"></a>
 ## Топология
 
 ![Topology](topology.png)
 
+<!-- TOC --><a name="ip-"></a>
 ## IP-план
+<!-- TOC --><a name="loopbacks"></a>
 ### Loopbacks
 
 | Устройство | Loopback |
@@ -23,6 +117,7 @@
 | Leaf-2     | 10.1.1.2 |
 | Leaf-3     | 10.1.1.3 |
 
+<!-- TOC --><a name="leaf-spine-interconnections"></a>
 ### Leaf-Spine Interconnections
 
 | Link  | Subnet       |
@@ -34,6 +129,7 @@
 | S2-L2 | 10.1.22.0/30 |
 | S2-L3 | 10.1.23.0/30 |
 
+<!-- TOC --><a name="--1"></a>
 ## План работы
 
 1. Убедиться, что стыковочные связи находятся в рабочем состоянии (ping).
@@ -42,6 +138,7 @@
 4. Убедиться, что BFD-сессии между устройствами находятся в рабочем состоянии и привязаны к процессу IS-IS.
 5. Убедиться в достижимости каждого loopback-адреса устройства со всех других устройств.
 
+<!-- TOC --><a name="-2"></a>
 ### Требования
 * В рамках underlay-сети нашей топологии должна использоваться одна L2-зона (зоны L1 использоваться не должны).
 * NSAP-адреса должны использовать AFI 49, номер зоны 1.
@@ -55,13 +152,17 @@
 * Секретная строка аутентификации должна иметь значение `OTUS`.
 * Для уменьшения времени реагирования на аварии, на стыковочных связях должен быть настроен и активирован для IS-IS протокол BFD.
 
+<!-- TOC --><a name="--2"></a>
 ## Выполнение работы
 Настройка IP-адресации на интерфейсах устройств была выполнена в ДЗ-1.
 
+<!-- TOC --><a name="-1-"></a>
 ### Шаг 1. Проверка стыковочных связей
 Перед настройкой динамической маршрутизации мы проверим, что стыковочные связи находятся в исправном состоянии. Проверка будет осуществлена с помощью утилиты ping. Мы сделаем ping с каждого из Spine на стыковочный IP каждого Leaf-коммутатора.
 
+<!-- TOC --><a name="spine-1"></a>
 #### Spine-1
+<!-- TOC --><a name="ping-leaf-1"></a>
 ##### ping Leaf-1
 ```
 Spine-1#ping 10.1.11.2 repeat 1
@@ -69,12 +170,14 @@ PING 10.1.11.2 (10.1.11.2) 72(100) bytes of data.
 80 bytes from 10.1.11.2: icmp_seq=1 ttl=64 time=7.33 ms
 ```
 
+<!-- TOC --><a name="ping-leaf-2"></a>
 ##### ping Leaf-2
 ```
 Spine-1#ping 10.1.12.2 repeat 1
 PING 10.1.12.2 (10.1.12.2) 72(100) bytes of data.
 80 bytes from 10.1.12.2: icmp_seq=1 ttl=64 time=8.69 ms
 ```
+<!-- TOC --><a name="ping-leaf-3"></a>
 ##### ping Leaf-3
 ```
 Spine-1#ping 10.1.13.2 repeat 1
@@ -83,7 +186,9 @@ PING 10.1.13.2 (10.1.13.2) 72(100) bytes of data.
 
 ```
 
+<!-- TOC --><a name="spine-2"></a>
 #### Spine-2
+<!-- TOC --><a name="ping-leaf-1-1"></a>
 ##### ping Leaf-1
 ```
 Spine-2#ping 10.1.21.2 repeat 1
@@ -91,6 +196,7 @@ PING 10.1.21.2 (10.1.21.2) 72(100) bytes of data.
 80 bytes from 10.1.21.2: icmp_seq=1 ttl=64 time=9.36 ms
 ```
 
+<!-- TOC --><a name="ping-leaf-2-1"></a>
 ##### ping Leaf-2
 ```
 Spine-2#ping 10.1.22.2 repeat 1
@@ -98,6 +204,7 @@ PING 10.1.22.2 (10.1.22.2) 72(100) bytes of data.
 80 bytes from 10.1.22.2: icmp_seq=1 ttl=64 time=7.96 ms
 ```
 
+<!-- TOC --><a name="ping-leaf-3-1"></a>
 ##### ping Leaf-3
 ```
 Spine-2#ping 10.1.23.2 repeat 1
@@ -105,9 +212,11 @@ PING 10.1.23.2 (10.1.23.2) 72(100) bytes of data.
 80 bytes from 10.1.23.2: icmp_seq=1 ttl=64 time=8.14 ms
 ```
 
+<!-- TOC --><a name="-2-is-is-bfd"></a>
 ### Шаг 2. Настройка IS-IS и BFD
 Мы убедились, что стыковочные связи исправны. Теперь начнем настраивать непосредственно процессы IS-IS и BFD на каждом устройстве.
 
+<!-- TOC --><a name="spine-1-1"></a>
 #### Spine-1
 Шаги настройки:
 1) Мы инициализируем процесс IS-IS и задаем ему имя "OTUS".
@@ -146,6 +255,7 @@ interface Ethernet3
  isis enable OTUS
 ```
 
+<!-- TOC --><a name="spine-2-1"></a>
 #### Spine-2
 1) Мы инициализируем процесс IS-IS и задаем ему имя "OTUS".
 2) Мы указываем NSAP-адрес как AFI 49 (Private Address Space), Area ID 1, System ID 0100.0100.0002 (преобразовано из 10.1.0.2), Selector 00.
@@ -184,6 +294,7 @@ interface Ethernet3
 ```
 
 
+<!-- TOC --><a name="leaf-1"></a>
 #### Leaf-1
 1) Мы инициализируем процесс IS-IS и задаем ему имя "OTUS".
 2) Мы указываем NSAP-адрес как AFI 49 (Private Address Space), Area ID 1, System ID 0100.0100.1001 (преобразовано из 10.1.1.1), Selector 00.
@@ -217,6 +328,7 @@ interface Ethernet2
  isis enable OTUS
 ```
 
+<!-- TOC --><a name="leaf-2"></a>
 #### Leaf-2
 1) Мы инициализируем процесс IS-IS и задаем ему имя "OTUS".
 2) Мы указываем NSAP-адрес как AFI 49 (Private Address Space), Area ID 1, System ID 0100.0100.1002 (преобразовано из 10.1.1.2), Selector 00.
@@ -250,6 +362,7 @@ interface Ethernet2
  isis enable OTUS
 ```
 
+<!-- TOC --><a name="leaf-3"></a>
 #### Leaf-3
 1) Мы инициализируем процесс IS-IS и задаем ему имя "OTUS".
 2) Мы указываем NSAP-адрес как AFI 49 (Private Address Space), Area ID 1, System ID 0100.0100.1003 (преобразовано из 10.1.1.3), Selector 00.
@@ -282,8 +395,11 @@ interface Ethernet2
  isis enable OTUS
 ```
 
+<!-- TOC --><a name="-is-is-bfd"></a>
 ### Верификация состояния IS-IS и BFD
+<!-- TOC --><a name="spine-1-2"></a>
 #### Spine-1
+<!-- TOC --><a name="-is-is"></a>
 ##### Проверка состояния процесса IS-IS
 ```
 Spine-1#show isis summary
@@ -317,7 +433,9 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что System ID установлен корректно, тип маршрутизатора установлен как L2, активных интерфейсов 4 штуки (три стыковочных и один loopback), включена поддержка IPv4 (Routes IPv4 only), аутентификация для Level-2 настроена - использует алгоритм SHA и ключ с ID "1". Адрес зоны 49.0001.
 
+<!-- TOC --><a name="-is-is-"></a>
 ##### Проверка состояния IS-IS на интерфейсах
+<!-- TOC --><a name="loopback-0"></a>
 ###### Loopback 0
 ```
 Spine-1#show isis interface Loopback 0
@@ -340,6 +458,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Loopback0 убеждаемся, что IS-IS активен и принадлежит верному процессу (OTUS), активирована AF IPv4, BFD заглушен, интерфейс является пассивным.
 
+<!-- TOC --><a name="ethernet-1"></a>
 ###### Ethernet 1
 ```
 Spine-1#show isis interface Ethernet 1
@@ -364,6 +483,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 1 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="ethernet-2"></a>
 ###### Ethernet 2
 ```
 Spine-1#show isis interface Ethernet 2
@@ -388,6 +508,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 2 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="ethernet-3"></a>
 ###### Ethernet 3
 ```
 Spine-1#show isis interface Ethernet 3
@@ -412,6 +533,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 3 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="--3"></a>
 ##### Проверка состояния соседей
 ```
 Spine-1#show isis neighbors detail level-2
@@ -459,6 +581,7 @@ OTUS      default  Leaf-3           L2   Ethernet3          P2P               UP
 ```
 Здесь мы можем убедиться, что все ожидаемые соседи (Leaf-1, Leaf-2, Leaf-3) присутствуют и находятся в состоянии UP, BFD активировано, AF IPv4 активирована.
 
+<!-- TOC --><a name="-bfd"></a>
 ##### Проверка состояния сессий BFD
 ```
 Spine-1#show bfd peers
@@ -478,6 +601,7 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
 ```
 С BFD-сессиями все в порядке.
 
+<!-- TOC --><a name="-level-2"></a>
 ##### Проверка базы данных состояния каналов Level-2
 ```
 Spine-1#show isis database detail 
@@ -575,6 +699,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
 
+<!-- TOC --><a name="--4"></a>
 ##### Проверка таблицы маршрутизации
 ```
 Spine-1#show ip route
@@ -610,7 +735,9 @@ Gateway of last resort is not set
 ```
 Ожидаемые нами маршруты присутствуют (стыковочные сети Spine-2 и все loopback'и). Next-hop'ы выглядят корректными.
 
+<!-- TOC --><a name="spine-2-2"></a>
 #### Spine-2
+<!-- TOC --><a name="-is-is-1"></a>
 ##### Проверка состояния процесса IS-IS
 ```
 Spine-2#show isis summary
@@ -644,7 +771,9 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что System ID установлен корректно, тип маршрутизатора установлен как L2, активных интерфейсов 4 штуки (три стыковочных и один loopback), включена поддержка IPv4 (Routes IPv4 only), аутентификация для Level-2 настроена - использует алгоритм SHA и ключ с ID "1". Адрес зоны 49.0001.
 
+<!-- TOC --><a name="-is-is--1"></a>
 ##### Проверка состояния IS-IS на интерфейсах
+<!-- TOC --><a name="loopback-0-1"></a>
 ###### Loopback 0
 ```
 Spine-2#show isis interface Loopback 0
@@ -667,6 +796,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Loopback0 убеждаемся, что IS-IS активен и принадлежит верному процессу (OTUS), активирована AF IPv4, BFD заглушен, интерфейс является пассивным.
 
+<!-- TOC --><a name="ethernet-1-1"></a>
 ###### Ethernet 1
 ```
 Spine-2#show isis interface Ethernet 1
@@ -691,6 +821,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 1 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="ethernet-2-1"></a>
 ###### Ethernet 2
 ```
 Spine-2#show isis interface Ethernet 2
@@ -715,6 +846,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 2 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="ethernet-3-1"></a>
 ###### Ethernet 3
 ```
 Spine-2#show isis interface Ethernet 3
@@ -739,6 +871,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 3 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="--5"></a>
 ##### Проверка состояния соседей
 ```
 Spine-2#show isis neighbors detail level-2
@@ -786,6 +919,7 @@ OTUS      default  Leaf-3           L2   Ethernet3          P2P               UP
 ```
 Здесь мы можем убедиться, что все ожидаемые соседи (Leaf-1, Leaf-2, Leaf-3) присутствуют и находятся в состоянии UP, BFD активировано, AF IPv4 активирована.
 
+<!-- TOC --><a name="-bfd-1"></a>
 ##### Проверка состояния сессий BFD
 ```
 Spine-2#show bfd peers
@@ -805,6 +939,7 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
 ```
 С BFD-сессиями все в порядке.
 
+<!-- TOC --><a name="-level-2-1"></a>
 ##### Проверка базы данных состояния каналов Level-2
 ```
 Spine-2#show isis database detail 
@@ -902,6 +1037,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
 
+<!-- TOC --><a name="--6"></a>
 ##### Проверка таблицы маршрутизации
 ```
 Spine-2#show ip route
@@ -937,7 +1073,9 @@ Gateway of last resort is not set
 ```
 Ожидаемые нами маршруты присутствуют (стыковочные сети Spine-1 и все loopback'и). Next-hop'ы выглядят корректными.
 
+<!-- TOC --><a name="leaf-1-1"></a>
 #### Leaf-1
+<!-- TOC --><a name="-is-is-2"></a>
 ##### Проверка состояния процесса IS-IS
 ```
 Leaf-1#show isis summary
@@ -971,7 +1109,9 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что System ID установлен корректно, тип маршрутизатора установлен как L2, активных интерфейсов 3 штуки (два стыковочных и один loopback), включена поддержка IPv4 (Routes IPv4 only), аутентификация для Level-2 настроена - использует алгоритм SHA и ключ с ID "1". Адрес зоны 49.0001.
 
+<!-- TOC --><a name="-is-is--2"></a>
 ##### Проверка состояния IS-IS на интерфейсах
+<!-- TOC --><a name="loopback-0-2"></a>
 ###### Loopback 0
 ```
 Leaf-1#show isis interface Loopback 0
@@ -994,6 +1134,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Loopback0 убеждаемся, что IS-IS активен и принадлежит верному процессу (OTUS), активирована AF IPv4, BFD заглушен, интерфейс является пассивным.
 
+<!-- TOC --><a name="ethernet-1-2"></a>
 ###### Ethernet 1
 ```
 Leaf-1#show isis interface Ethernet 1
@@ -1018,6 +1159,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 1 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="ethernet-2-2"></a>
 ###### Ethernet 2
 ```
 Leaf-1#show isis interface Ethernet 2
@@ -1042,6 +1184,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 2 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="--7"></a>
 ##### Проверка состояния соседей
 ```
 Leaf-1#show isis neighbors detail level-2
@@ -1076,6 +1219,7 @@ OTUS      default  Spine-2          L2   Ethernet2          P2P               UP
 ```
 Здесь мы можем убедиться, что все ожидаемые соседи (оба Spine) присутствуют и находятся в состоянии UP, BFD активировано, AF IPv4 активирована.
 
+<!-- TOC --><a name="-bfd-2"></a>
 ##### Проверка состояния сессий BFD
 ```
 Leaf-1#show bfd peers
@@ -1093,6 +1237,7 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
 ```
 С BFD-сессиями все в порядке.
 
+<!-- TOC --><a name="-level-2-2"></a>
 ##### Проверка базы данных состояния каналов Level-2
 ```
 Leaf-1#show isis database detail 
@@ -1190,6 +1335,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
 
+<!-- TOC --><a name="--8"></a>
 ##### Проверка таблицы маршрутизации
 ```
 Leaf-1#show ip route
@@ -1226,7 +1372,9 @@ Gateway of last resort is not set
 ```
 Ожидаемые нами маршруты присутствуют (стыковочные сети, подключенные к другим Leaf'ам и все loopback'и). Next-hop'ы выглядят корректными.
 
+<!-- TOC --><a name="leaf-2-1"></a>
 #### Leaf-2
+<!-- TOC --><a name="-is-is-3"></a>
 ##### Проверка состояния процесса IS-IS
 ```
 Leaf-2#show isis summary
@@ -1260,7 +1408,9 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что System ID установлен корректно, тип маршрутизатора установлен как L2, активных интерфейсов 3 штуки (два стыковочных и один loopback), включена поддержка IPv4 (Routes IPv4 only), аутентификация для Level-2 настроена - использует алгоритм SHA и ключ с ID "1". Адрес зоны 49.0001.
 
+<!-- TOC --><a name="-is-is--3"></a>
 ##### Проверка состояния IS-IS на интерфейсах
+<!-- TOC --><a name="loopback-0-3"></a>
 ###### Loopback 0
 ```
 Leaf-2#show isis interface Loopback 0
@@ -1283,6 +1433,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Loopback0 убеждаемся, что IS-IS активен и принадлежит верному процессу (OTUS), активирована AF IPv4, BFD заглушен, интерфейс является пассивным.
 
+<!-- TOC --><a name="ethernet-1-3"></a>
 ###### Ethernet 1
 ```
 Leaf-2#show isis interface Ethernet 1
@@ -1307,6 +1458,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 1 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="ethernet-2-3"></a>
 ###### Ethernet 2
 ```
 Leaf-2#show isis interface Ethernet 2
@@ -1331,6 +1483,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 2 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="--9"></a>
 ##### Проверка состояния соседей
 ```
 Leaf-2#show isis neighbors detail level-2
@@ -1365,6 +1518,7 @@ OTUS      default  Spine-2          L2   Ethernet2          P2P               UP
 ```
 Здесь мы можем убедиться, что все ожидаемые соседи (оба Spine) присутствуют и находятся в состоянии UP, BFD активировано, AF IPv4 активирована.
 
+<!-- TOC --><a name="-bfd-3"></a>
 ##### Проверка состояния сессий BFD
 ```
 Leaf-2#show bfd peers
@@ -1382,6 +1536,7 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
 ```
 С BFD-сессиями все в порядке.
 
+<!-- TOC --><a name="-level-2-3"></a>
 ##### Проверка базы данных состояния каналов Level-2
 ```
 Leaf-2#show isis database detail 
@@ -1479,6 +1634,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
 
+<!-- TOC --><a name="--10"></a>
 ##### Проверка таблицы маршрутизации
 ```
 Leaf-2#show ip route
@@ -1514,7 +1670,9 @@ Gateway of last resort is not set
 ```
 Ожидаемые нами маршруты присутствуют (стыковочные сети, подключенные к другим Leaf'ам и все loopback'и). Next-hop'ы выглядят корректными.
 
+<!-- TOC --><a name="leaf-3-1"></a>
 #### Leaf-3
+<!-- TOC --><a name="-is-is-4"></a>
 ##### Проверка состояния процесса IS-IS
 ```
 Leaf-3#show isis summary
@@ -1548,7 +1706,9 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что System ID установлен корректно, тип маршрутизатора установлен как L2, активных интерфейсов 3 штуки (два стыковочных и один loopback), включена поддержка IPv4 (Routes IPv4 only), аутентификация для Level-2 настроена - использует алгоритм SHA и ключ с ID "1". Адрес зоны 49.0001.
 
+<!-- TOC --><a name="-is-is--4"></a>
 ##### Проверка состояния IS-IS на интерфейсах
+<!-- TOC --><a name="loopback-0-4"></a>
 ###### Loopback 0
 ```
 Leaf-3#show isis interface Loopback 0
@@ -1571,6 +1731,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Loopback0 убеждаемся, что IS-IS активен и принадлежит верному процессу (OTUS), активирована AF IPv4, BFD заглушен, интерфейс является пассивным.
 
+<!-- TOC --><a name="ethernet-1-4"></a>
 ###### Ethernet 1
 ```
 Leaf-3#show isis interface Ethernet 1
@@ -1595,6 +1756,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 1 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="ethernet-2-4"></a>
 ###### Ethernet 2
 ```
 Leaf-3#show isis interface Ethernet 2
@@ -1619,6 +1781,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Для Ethernet 2 мы убеждаемся, что интерфейс принадлежит верному процессу (OTUS), тип интерфейса P2P, активирована AF IPv4, BFD активирован, количество соседей 1 штука.
 
+<!-- TOC --><a name="--11"></a>
 ##### Проверка состояния соседей
 ```
 Leaf-3#show isis neighbors detail level-2
@@ -1653,6 +1816,7 @@ OTUS      default  Spine-2          L2   Ethernet2          P2P               UP
 ```
 Здесь мы можем убедиться, что все ожидаемые соседи (оба Spine) присутствуют и находятся в состоянии UP, BFD активировано, AF IPv4 активирована.
 
+<!-- TOC --><a name="-bfd-4"></a>
 ##### Проверка состояния сессий BFD
 ```
 Leaf-3#show bfd peers
@@ -1670,6 +1834,7 @@ DstAddr        MyDisc    YourDisc  Interface/Transport    Type          LastUp
 ```
 С BFD-сессиями все в порядке.
 
+<!-- TOC --><a name="-level-2-4"></a>
 ##### Проверка базы данных состояния каналов Level-2
 ```
 Leaf-3#show isis database detail 
@@ -1767,6 +1932,7 @@ IS-IS Instance: OTUS VRF: default
 ```
 Здесь мы можем убедиться, что в корректности данных в полученных LSP (и что LSP от всех маршрутизаторов IS-IS присутствуют в БД). Все, вроде бы, выглядит хорошо :)
 
+<!-- TOC --><a name="--12"></a>
 ##### Проверка таблицы маршрутизации
 ```
 Leaf-3#show ip route
@@ -1803,7 +1969,9 @@ Gateway of last resort is not set
 Ожидаемые нами маршруты присутствуют (стыковочные сети, подключенные к другим Leaf'ам и все loopback'и). Next-hop'ы выглядят корректными.
 
 
+<!-- TOC --><a name="-loopback-"></a>
 ### Проверка достижимости loopback-адресов
+<!-- TOC --><a name="spine-1-3"></a>
 #### Spine-1
 ping Spine-2
 ```
@@ -1849,6 +2017,7 @@ PING 10.1.1.3 (10.1.1.3) 72(100) bytes of data.
 rtt min/avg/max/mdev = 4.055/4.055/4.055/0.000 ms
 ```
 
+<!-- TOC --><a name="spine-2-3"></a>
 #### Spine-2
 ping Spine-1
 ```
@@ -1894,6 +2063,7 @@ PING 10.1.1.3 (10.1.1.3) 72(100) bytes of data.
 rtt min/avg/max/mdev = 3.072/3.072/3.072/0.000 ms
 ```
 
+<!-- TOC --><a name="leaf-1-2"></a>
 #### Leaf-1
 ping Spine-1
 ```
@@ -1939,6 +2109,7 @@ PING 10.1.1.3 (10.1.1.3) 72(100) bytes of data.
 rtt min/avg/max/mdev = 7.181/7.181/7.181/0.000 ms
 ```
 
+<!-- TOC --><a name="leaf-2-2"></a>
 #### Leaf-2
 ping Spine-1
 ```
@@ -1984,6 +2155,7 @@ PING 10.1.1.3 (10.1.1.3) 72(100) bytes of data.
 rtt min/avg/max/mdev = 6.887/6.887/6.887/0.000 ms
 ```
 
+<!-- TOC --><a name="leaf-3-2"></a>
 #### Leaf-3
 ping Spine-1
 ```
