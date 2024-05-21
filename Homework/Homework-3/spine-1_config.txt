@@ -1,0 +1,68 @@
+! Command: show running-config
+! device: Spine-1 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model ribd
+!
+hostname Spine-1
+!
+spanning-tree mode mstp
+!
+interface Ethernet1
+   description Link_to_Leaf1
+   no switchport
+   ip address 10.1.11.1/30
+   isis enable OTUS
+   isis network point-to-point
+!
+interface Ethernet2
+   description Link_to_Leaf2
+   no switchport
+   ip address 10.1.12.1/30
+   isis enable OTUS
+   isis network point-to-point
+!
+interface Ethernet3
+   description Link_to_Leaf3
+   no switchport
+   ip address 10.1.13.1/30
+   isis enable OTUS
+   isis network point-to-point
+!
+interface Ethernet4
+   shutdown
+!
+interface Ethernet5
+   shutdown
+!
+interface Ethernet6
+   shutdown
+!
+interface Ethernet7
+   shutdown
+!
+interface Loopback0
+   ip address 10.1.0.1/32
+   isis enable OTUS
+   no isis bfd
+   isis passive
+!
+interface Management1
+!
+ip routing
+!
+router isis OTUS
+   net 49.0001.0100.0100.0001.00
+   is-type level-2
+   authentication mode sha key-id 1 level-2
+   authentication key-id 1 algorithm sha-256 key 7 6yEn2R6B0Zw= level-2
+   !
+   address-family ipv4 unicast
+      bfd all-interfaces
+!
+end
