@@ -1,7 +1,7 @@
 # Домашнее задание 4 (Построение Underlay-сети на базе eBGP)
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
-- [Домашнее задание 4 (Построение Underlay-сети на базе eBGP)](#-4-underlay-integrated-is-is)
+- Содержание
    * [Цель домашней работы](#-)
    * [Задача](#)
    * [Топология](#-1)
