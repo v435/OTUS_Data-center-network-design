@@ -57,17 +57,16 @@ peer-filter LEAFS
 !
 router bgp 65100
    maximum-paths 64
-   neighbor LEAFS peer group
-   neighbor LEAFS out-delay 0
-   neighbor LEAFS bfd
-   neighbor LEAFS allowas-in 1
-   neighbor LEAFS timers 3 9
-   neighbor LEAFS password 7 dCG4CPtDl/0=
+   neighbor UNDERLAY peer group
+   neighbor UNDERLAY out-delay 0
+   neighbor UNDERLAY bfd
+   neighbor UNDERLAY timers 3 9
+   neighbor UNDERLAY password 7 sM6K5gjRlwM=
    redistribute connected route-map BGP_REDISTRIBUTE_CONNECTED
-   neighbor interface Et1-6 peer-group LEAFS peer-filter LEAFS
+   neighbor interface Et1-6 peer-group UNDERLAY peer-filter LEAFS
    !
    address-family ipv4
-      neighbor LEAFS activate
-      neighbor LEAFS next-hop address-family ipv6 originate
+      neighbor UNDERLAY activate
+      neighbor UNDERLAY next-hop address-family ipv6 originate
 !
 end

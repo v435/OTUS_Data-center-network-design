@@ -159,6 +159,7 @@ localhost(config)#service routing protocols model multi-agent
 ```
 
 Перезагрузились, теперь потихоньку начнем настраивать наш Spine:
+
 Установим hostname:
 ```
 localhost(config)#hostname Spine-1

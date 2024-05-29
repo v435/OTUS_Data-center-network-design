@@ -52,16 +52,16 @@ route-map BGP_REDISTRIBUTE_CONNECTED permit 10
 !
 router bgp 65003
    maximum-paths 64
-   neighbor SPINES peer group
-   neighbor SPINES out-delay 0
-   neighbor SPINES bfd
-   neighbor SPINES timers 3 9
-   neighbor SPINES password 7 YczIGYtysaY=
+   neighbor UNDERLAY peer group
+   neighbor UNDERLAY out-delay 0
+   neighbor UNDERLAY bfd
+   neighbor UNDERLAY timers 3 9
+   neighbor UNDERLAY password 7 sM6K5gjRlwM=
    redistribute connected route-map BGP_REDISTRIBUTE_CONNECTED
-   neighbor interface Et1-2 peer-group SPINES remote-as 65100
+   neighbor interface Et1-2 peer-group UNDERLAY remote-as 65100
    !
    address-family ipv4
-      neighbor SPINES activate
-      neighbor SPINES next-hop address-family ipv6 originate
+      neighbor UNDERLAY activate
+      neighbor UNDERLAY next-hop address-family ipv6 originate
 !
 end
