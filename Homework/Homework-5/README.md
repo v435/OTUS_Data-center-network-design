@@ -1251,6 +1251,41 @@ tcpdump:
 Посмотрим в дамп трафика одного из пингов. Остальные скринить не будем, там, очевидно, будет то же самое :)
 ![TCPDUMP](tcpdump.png)
 
+Ну и более подробно два пакета (request и reply):
+```
+No.     Time           Source                Destination           Protocol Length VXLAN VNI  Info
+      1 0.000000       192.168.100.1         192.168.100.2         ICMP     148    1100       Echo (ping) request  id=0x672a, seq=1/256, ttl=64 (reply in 2)
+
+Frame 1: 148 bytes on wire (1184 bits), 148 bytes captured (1184 bits)
+Ethernet II, Src: 50:24:aa:e0:9f:5d (50:24:aa:e0:9f:5d), Dst: 50:3e:06:e2:69:e1 (50:3e:06:e2:69:e1)
+Internet Protocol Version 4, Src: 10.1.1.1, Dst: 10.1.1.2
+User Datagram Protocol, Src Port: 769, Dst Port: 4789
+Virtual eXtensible Local Area Network
+    Flags: 0x0800, VXLAN Network ID (VNI)
+    Group Policy ID: 0
+    VXLAN Network Identifier (VNI): 1100
+    Reserved: 0
+Ethernet II, Src: 00:50:79:66:68:06 (00:50:79:66:68:06), Dst: 00:50:79:66:68:07 (00:50:79:66:68:07)
+Internet Protocol Version 4, Src: 192.168.100.1, Dst: 192.168.100.2
+Internet Control Message Protocol
+
+No.     Time           Source                Destination           Protocol Length VXLAN VNI  Info
+      2 0.011699       192.168.100.2         192.168.100.1         ICMP     148    1100       Echo (ping) reply    id=0x672a, seq=1/256, ttl=64 (request in 1)
+
+Frame 2: 148 bytes on wire (1184 bits), 148 bytes captured (1184 bits)
+Ethernet II, Src: 50:3e:06:e2:69:e1 (50:3e:06:e2:69:e1), Dst: 50:24:aa:e0:9f:5d (50:24:aa:e0:9f:5d)
+Internet Protocol Version 4, Src: 10.1.1.2, Dst: 10.1.1.1
+User Datagram Protocol, Src Port: 769, Dst Port: 4789
+Virtual eXtensible Local Area Network
+    Flags: 0x0800, VXLAN Network ID (VNI)
+    Group Policy ID: 0
+    VXLAN Network Identifier (VNI): 1100
+    Reserved: 0
+Ethernet II, Src: 00:50:79:66:68:07 (00:50:79:66:68:07), Dst: 00:50:79:66:68:06 (00:50:79:66:68:06)
+Internet Protocol Version 4, Src: 192.168.100.2, Dst: 192.168.100.1
+Internet Control Message Protocol
+```
+
 <!-- TOC --><a name="client-2"></a>
 #### Client-2
 ping Client-1
