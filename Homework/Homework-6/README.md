@@ -1,6 +1,11 @@
+<!-- TOC --><a name="-5-vxlan-l2-vni"></a>
+# Домашнее задание 6 (VxLAN. EVPN L3)
+
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
-- [Домашнее задание 5 (VxLAN. L2 VNI)](#-5-vxlan-l2-vni)
+<!-- TOC --><a name=""></a>
+## Содержание
+- [Домашнее задание 6 (VxLAN. EVPN L3)](#-5-vxlan-l2-vni)
    * [Содержание](#)
    * [Цель домашней работы](#-)
    * [Задача](#-1)
@@ -55,11 +60,6 @@
    * [Итого](#-6)
 
 <!-- TOC end -->
-
-<!-- TOC --><a name="-5-vxlan-l2-vni"></a>
-# Домашнее задание 5 (VxLAN. L2 VNI)
-<!-- TOC --><a name=""></a>
-## Содержание
 
 <!-- TOC --><a name="-"></a>
 ## Цель домашней работы
