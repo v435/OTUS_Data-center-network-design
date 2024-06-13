@@ -122,9 +122,9 @@ BUM-трафик будем рассылать с помощью механиз�
 | ---------- | -------- | ----- |
 | Spine-1    | 10.1.0.1 | 65100 |
 | Spine-2    | 10.1.0.2 | 65100 |
-| Leaf-1     | 10.1.1.1 | 65101 |
-| Leaf-2     | 10.1.1.2 | 65102 |
-| Leaf-3     | 10.1.1.3 | 65103 | 
+| Leaf-1     | 10.1.1.1 | 65001 |
+| Leaf-2     | 10.1.1.2 | 65002 |
+| Leaf-3     | 10.1.1.3 | 65003 | 
 
 <!-- TOC --><a name="-4"></a>
 ### Клиенты
@@ -300,9 +300,9 @@ end
 
 ```
 Spine-1(config)# router bgp 65100
+Spine-1(config-router-bgp)# neighbor CLOS send-community extended
 Spine-1(config-router-bgp)# address-family evpn
 Spine-1(config-router-bgp-af)# neighbor CLOS activate
-Spine-1(config-router-bgp-af)# neighbor CLOS send-community extended
 ```
 
 Всё :) Настраиваем Spine-2 по такой же схеме.
@@ -376,9 +376,9 @@ end
 
 ```
 Spine-2(config)# router bgp 65100
+Spine-2(config-router-bgp)# neighbor CLOS send-community extended
 Spine-2(config-router-bgp)# address-family evpn
 Spine-2(config-router-bgp-af)# neighbor CLOS activate
-Spine-2(config-router-bgp-af)# neighbor CLOS send-community extended
 ```
 
 <!-- TOC --><a name="-leaf-1"></a>
@@ -481,10 +481,10 @@ Leaf-1(config-macvrf-100)# redistribute learned
 
 Теперь включим AF EVPN в настройках процесса BGP:
 ```
-Leaf-1(config)# router bgp 65100
+Leaf-1(config)# router bgp 65001
+Leaf-1(config-router-bgp)# neighbor CLOS send-community extended
 Leaf-1(config-router-bgp)# address-family evpn
 Leaf-1(config-router-bgp-af)# neighbor CLOS activate
-Leaf-1(config-router-bgp-af)# neighbor CLOS send-community extended
 ```
 Как и везде, активируем AF EVPN для наших соседей и включаем отсылку расширенных комьюнити.
 
@@ -503,14 +503,14 @@ interface Vxlan1
    vxlan vlan 100 vni 1100
 !
 router bgp 65001
+   neighbor CLOS send-community extended
    vlan 100
       rd auto
       route-target both 100:100
       redistribute learned
    !
    address-family evpn
-      neighbor CLOS activate
-      neighbor CLOS send-community extended
+      neighbor CLOS activate   
 end
 ```
 
@@ -591,6 +591,7 @@ interface Vxlan1
    vxlan vlan 100 vni 1100
 !
 router bgp 65002
+   neighbor CLOS send-community extended 
    vlan 100
       rd auto
       route-target both 100:100
@@ -598,7 +599,6 @@ router bgp 65002
    !
    address-family evpn
       neighbor CLOS activate
-      neighbor CLOS send-community extended 
 end
 ```
 
@@ -682,6 +682,7 @@ interface Vxlan1
    vxlan vlan 100 vni 1100
 !
 router bgp 65003
+   neighbor CLOS send-community extended 
    vlan 100
       rd auto
       route-target both 100:100
@@ -689,7 +690,6 @@ router bgp 65003
    !
    address-family evpn
       neighbor CLOS activate
-      neighbor CLOS send-community extended 
 end
 ```
 
