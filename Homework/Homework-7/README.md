@@ -1,12 +1,12 @@
 <!-- TOC --><a name="-6-vxlan-evpn-l3"></a>
-# Домашнее задание 6 (VxLAN. EVPN L3)
+# Домашнее задание 7 (VxLAN. Аналоги VPC)
 
 <!-- TOC --><a name=""></a>
 ## Содержание
 
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
-- [Домашнее задание 6 (VxLAN. EVPN L3)](#-6-vxlan-evpn-l3)
+- [Домашнее задание 6 (VxLAN. Аналоги VPC)](#-6-vxlan-evpn-l3)
    * [Содержание](#)
    * [Цель домашней работы](#-)
    * [Задача](#-1)
