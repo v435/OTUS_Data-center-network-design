@@ -2651,7 +2651,7 @@ PING 192.168.20.4 (192.168.20.4) 56(84) bytes of data.
 64 bytes from 192.168.20.4: icmp_seq=4 ttl=63 time=11.3 ms
 ...
 ```
-Кладем линк между 0 у Client-4 и VTEP'ом:
+Кладем линк между e0 у Client-4 и Leaf-2:
 ![topology_client4_e0-down.png](topology_client4_e0-down.png)
 
 Пинги утеряны, но после некоторого перерыва восстанавливаются:
@@ -2692,7 +2692,7 @@ no answer yet for icmp_seq=111
 64 bytes from 192.168.20.4: icmp_seq=118 ttl=62 time=21.9 ms
 ```
 
-Восстанавливаем линк к eth0 и кладем линк к eth1:
+Восстанавливаем линк к e0 и кладем линк между e1 и Leaf-3:
 ![topology_client4_e1-down.png](topology_client4_e1-down.png)
 ```
 64 bytes from 192.168.20.4: icmp_seq=151 ttl=62 time=15.3 ms
@@ -2723,7 +2723,7 @@ no answer yet for icmp_seq=174
 64 bytes from 192.168.20.4: icmp_seq=176 ttl=63 time=10.1 ms
 64 bytes from 192.168.20.4: icmp_seq=177 ttl=63 time=9.87 ms
 ```
-После некоторого перерыва трафик пошел снова, теперь уже через eth1.
+После некоторого перерыва трафик пошел снова, теперь уже через e1.
 
 <!-- TOC --><a name="-6"></a>
 ## Итого
