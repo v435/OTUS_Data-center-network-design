@@ -603,7 +603,7 @@ router bgp 65001
       route-target export evpn 1:1000
 ```
 
-Общий вид настроек, которые мы только что произвели:
+Общий вид настроек, которые мы только что сделали:
 ```
 vlan 10
    name Clients_10
@@ -627,16 +627,6 @@ interface Port-Channel2
       identifier 0000:0000:0000:0000:0002
       route-target import 00:00:00:00:00:02
    lacp system-id 02aa.aaaa.0002
-!
-interface Ethernet1
-   description Link_to_Spine-1
-   no switchport
-   ipv6 enable
-!
-interface Ethernet2
-   description Link_to_Spine-2
-   no switchport
-   ipv6 enable
 !
 interface Ethernet3
    description Link_to_Client-1
@@ -788,16 +778,6 @@ interface Port-Channel4
       route-target import 00:00:00:00:00:04
    lacp system-id 02aa.aaaa.0004
 !
-interface Ethernet1
-   description Link_to_Spine-1
-   no switchport
-   ipv6 enable
-!
-interface Ethernet2
-   description Link_to_Spine-2
-   no switchport
-   ipv6 enable
-!
 interface Ethernet3
    description Link_to_Client-1
    channel-group 1 mode active
@@ -942,16 +922,6 @@ interface Port-Channel4
       identifier 0000:0000:0000:0000:0004
       route-target import 00:00:00:00:00:04
    lacp system-id 02aa.aaaa.0004
-!
-interface Ethernet1
-   description Link_to_Spine-1
-   no switchport
-   ipv6 enable
-!
-interface Ethernet2
-   description Link_to_Spine-2
-   no switchport
-   ipv6 enable
 !
 interface Ethernet5
    description Link_to_Client-3
