@@ -1100,17 +1100,17 @@ network:
 <!-- TOC --><a name="bgp-summary"></a>
 #### BGP summary
 ```
-Spine-1#show bgp summary 
+Spine-1#show bgp summary
 BGP summary information for VRF default
 Router identifier 10.1.0.1, local AS number 65100
 Neighbor                               AS Session State AFI/SAFI                AFI/SAFI State   NLRI Rcd   NLRI Acc
 ----------------------------- ----------- ------------- ----------------------- -------------- ---------- ----------
-fe80::5255:aaff:fe38:6360%Et2       65002 Established   IPv4 Unicast            Negotiated              1          1
-fe80::5255:aaff:fe38:6360%Et2       65002 Established   L2VPN EVPN              Negotiated             20         20
-fe80::525d:31ff:fe1f:e784%Et1       65001 Established   IPv4 Unicast            Negotiated              1          1
-fe80::525d:31ff:fe1f:e784%Et1       65001 Established   L2VPN EVPN              Negotiated             11         11
-fe80::52fc:b9ff:fe4f:4120%Et3       65003 Established   IPv4 Unicast            Negotiated              1          1
-fe80::52fc:b9ff:fe4f:4120%Et3       65003 Established   L2VPN EVPN              Negotiated             11         11
+fe80::5201:e3ff:feca:e653%Et1       65001 Established   IPv4 Unicast            Negotiated              1          1
+fe80::5201:e3ff:feca:e653%Et1       65001 Established   L2VPN EVPN              Negotiated             11         11
+fe80::5257:f4ff:feb8:3af8%Et3       65003 Established   IPv4 Unicast            Negotiated              1          1
+fe80::5257:f4ff:feb8:3af8%Et3       65003 Established   L2VPN EVPN              Negotiated             11         11
+fe80::52be:e5ff:fe5e:634c%Et2       65002 Established   IPv4 Unicast            Negotiated              1          1
+fe80::52be:e5ff:fe5e:634c%Et2       65002 Established   L2VPN EVPN              Negotiated             21         21
 ```
 Все в порядке. С каждым соседом у нас установлена сессия в L2VPN EVPN.
 
@@ -1124,12 +1124,12 @@ BGP summary information for VRF default
 Router identifier 10.1.0.2, local AS number 65100
 Neighbor                               AS Session State AFI/SAFI                AFI/SAFI State   NLRI Rcd   NLRI Acc
 ----------------------------- ----------- ------------- ----------------------- -------------- ---------- ----------
-fe80::5255:aaff:fe38:6360%Et2       65002 Established   IPv4 Unicast            Negotiated              1          1
-fe80::5255:aaff:fe38:6360%Et2       65002 Established   L2VPN EVPN              Negotiated             20         20
-fe80::525d:31ff:fe1f:e784%Et1       65001 Established   IPv4 Unicast            Negotiated              1          1
-fe80::525d:31ff:fe1f:e784%Et1       65001 Established   L2VPN EVPN              Negotiated             11         11
-fe80::52fc:b9ff:fe4f:4120%Et3       65003 Established   IPv4 Unicast            Negotiated              1          1
-fe80::52fc:b9ff:fe4f:4120%Et3       65003 Established   L2VPN EVPN              Negotiated             11         11
+fe80::5201:e3ff:feca:e653%Et1       65001 Established   IPv4 Unicast            Negotiated              1          1
+fe80::5201:e3ff:feca:e653%Et1       65001 Established   L2VPN EVPN              Negotiated             11         11
+fe80::5257:f4ff:feb8:3af8%Et3       65003 Established   IPv4 Unicast            Negotiated              1          1
+fe80::5257:f4ff:feb8:3af8%Et3       65003 Established   L2VPN EVPN              Negotiated             11         11
+fe80::52be:e5ff:fe5e:634c%Et2       65002 Established   IPv4 Unicast            Negotiated              1          1
+fe80::52be:e5ff:fe5e:634c%Et2       65002 Established   L2VPN EVPN              Negotiated             21         21
 ```
 Все в порядке. С каждым соседом у нас установлена сессия в L2VPN EVPN.
 
@@ -1165,15 +1165,14 @@ Port Channel Port-Channel2:
 <!-- TOC --><a name="bgp-summary-2"></a>
 #### BGP Summary
 ```
-Leaf-1#show bgp summary 
 BGP summary information for VRF default
 Router identifier 10.1.1.1, local AS number 65001
 Neighbor                               AS Session State AFI/SAFI                AFI/SAFI State   NLRI Rcd   NLRI Acc
 ----------------------------- ----------- ------------- ----------------------- -------------- ---------- ----------
-fe80::522e:8aff:fe07:b3f5%Et1       65100 Established   IPv4 Unicast            Negotiated              3          3
-fe80::522e:8aff:fe07:b3f5%Et1       65100 Established   L2VPN EVPN              Negotiated             31         31
-fe80::5290:ceff:fec1:219%Et2        65100 Established   IPv4 Unicast            Negotiated              3          3
-fe80::5290:ceff:fec1:219%Et2        65100 Established   L2VPN EVPN              Negotiated             31         31
+fe80::5267:23ff:feeb:8403%Et2       65100 Established   IPv4 Unicast            Negotiated              3          3
+fe80::5267:23ff:feeb:8403%Et2       65100 Established   L2VPN EVPN              Negotiated             32         32
+fe80::527f:faff:fe31:f96a%Et1       65100 Established   IPv4 Unicast            Negotiated              3          3
+fe80::527f:faff:fe31:f96a%Et1       65100 Established   L2VPN EVPN              Negotiated             32         32
 ```
 Сессии у нас установлены только со Spine-ами, в обоих AF - IPv4 Unicast и в L2VPN EVPN.
 
@@ -1215,7 +1214,7 @@ IMET-маршруты мы должны увидеть от каждого VTEP'
 Вот тут посмотрим поподробнее. VTEP'ы должны сгенерировать по одному маршруту RT-1 для каждого EVI и еще один RT-1 общий для Ethernet-сегмента (без привязки к EVI).
 
 ```
-Leaf-1#show bgp evpn route-type auto-discovery detail 
+Leaf-1#show bgp evpn route-type auto-discovery detail
 BGP routing table information for VRF default
 Router identifier 10.1.1.1, local AS number 65001
 BGP routing table entry for auto-discovery 0 0000:0000:0000:0000:0001, Route Distinguisher: 10.1.1.1:10
@@ -1228,12 +1227,12 @@ BGP routing table entry for auto-discovery 0 0000:0000:0000:0000:0001, Route Dis
 BGP routing table entry for auto-discovery 0 0000:0000:0000:0000:0001, Route Distinguisher: 10.1.1.2:10
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan
       VNI: 1010
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan
       VNI: 1010
@@ -1246,12 +1245,12 @@ BGP routing table entry for auto-discovery 0000:0000:0000:0000:0001, Route Disti
 BGP routing table entry for auto-discovery 0000:0000:0000:0000:0001, Route Distinguisher: 10.1.1.2:1
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
@@ -1265,12 +1264,12 @@ BGP routing table entry for auto-discovery 0 0000:0000:0000:0000:0002, Route Dis
 BGP routing table entry for auto-discovery 0 0000:0000:0000:0000:0002, Route Distinguisher: 10.1.1.2:10
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan
       VNI: 1010
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan
       VNI: 1010
@@ -1283,108 +1282,108 @@ BGP routing table entry for auto-discovery 0000:0000:0000:0000:0002, Route Disti
 BGP routing table entry for auto-discovery 0000:0000:0000:0000:0002, Route Distinguisher: 10.1.1.2:1
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
 BGP routing table entry for auto-discovery 0 0000:0000:0000:0000:0003, Route Distinguisher: 10.1.1.2:20
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020
 BGP routing table entry for auto-discovery 0 0000:0000:0000:0000:0003, Route Distinguisher: 10.1.1.3:20
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020
 BGP routing table entry for auto-discovery 0000:0000:0000:0000:0003, Route Distinguisher: 10.1.1.2:1
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
 BGP routing table entry for auto-discovery 0000:0000:0000:0000:0003, Route Distinguisher: 10.1.1.3:1
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
 BGP routing table entry for auto-discovery 0 0000:0000:0000:0000:0004, Route Distinguisher: 10.1.1.2:20
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020
 BGP routing table entry for auto-discovery 0 0000:0000:0000:0000:0004, Route Distinguisher: 10.1.1.3:20
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020
 BGP routing table entry for auto-discovery 0000:0000:0000:0000:0004, Route Distinguisher: 10.1.1.2:1
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
 BGP routing table entry for auto-discovery 0000:0000:0000:0000:0004, Route Distinguisher: 10.1.1.3:1
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnEsiLabel:0
       VNI: 0
@@ -1396,7 +1395,7 @@ BGP routing table entry for auto-discovery 0000:0000:0000:0000:0004, Route Disti
 <!-- TOC --><a name="route-type-4-ethernet-segment-route"></a>
 ##### Route Type 4 (Ethernet Segment Route)
 ```
-Leaf-1#show bgp evpn route-type ethernet-segment detail 
+Leaf-1#show bgp evpn route-type ethernet-segment detail
 BGP routing table information for VRF default
 Router identifier 10.1.1.1, local AS number 65001
 BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0001 10.1.1.1, Route Distinguisher: 10.1.1.1:1
@@ -1408,11 +1407,11 @@ BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0001 10.1.1.1, 
 BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0001 10.1.1.2, Route Distinguisher: 10.1.1.2:1
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:01
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:01
 BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0002 10.1.1.1, Route Distinguisher: 10.1.1.1:1
@@ -1424,31 +1423,51 @@ BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0002 10.1.1.1, 
 BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0002 10.1.1.2, Route Distinguisher: 10.1.1.2:1
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:02
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:02
+BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0003 10.1.1.2, Route Distinguisher: 10.1.1.2:1
+ Paths: 2 available
+  65100 65002
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
+      Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
+      Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:03
+  65100 65002
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
+      Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
+      Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:03
 BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0003 10.1.1.3, Route Distinguisher: 10.1.1.3:1
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:03
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:03
+BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0004 10.1.1.2, Route Distinguisher: 10.1.1.2:1
+ Paths: 2 available
+  65100 65002
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
+      Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
+      Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:04
+  65100 65002
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
+      Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
+      Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:04
 BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0004 10.1.1.3, Route Distinguisher: 10.1.1.3:1
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:04
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: TunnelEncap:tunnelTypeVxlan EvpnEsImportRt:00:00:00:00:00:04
 ```
@@ -1457,7 +1476,7 @@ BGP routing table entry for ethernet-segment 0000:0000:0000:0000:0004 10.1.1.3, 
 <!-- TOC --><a name="route-type-2-mac-advertisment-route"></a>
 ##### Route Type 2 (MAC Advertisment Route)
 ```
-Leaf-1#show bgp evpn route-type mac-ip detail 
+Leaf-1#show bgp evpn route-type mac-ip detail
 BGP routing table information for VRF default
 Router identifier 10.1.1.1, local AS number 65001
 BGP routing table entry for mac-ip 0200.0000.01bb, Route Distinguisher: 10.1.1.1:10
@@ -1470,12 +1489,12 @@ BGP routing table entry for mac-ip 0200.0000.01bb, Route Distinguisher: 10.1.1.1
 BGP routing table entry for mac-ip 0200.0000.01bb, Route Distinguisher: 10.1.1.2:10
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan
       VNI: 1010 ESI: 0000:0000:0000:0000:0001
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan
       VNI: 1010 ESI: 0000:0000:0000:0000:0001
@@ -1489,14 +1508,14 @@ BGP routing table entry for mac-ip 0200.0000.01bb 192.168.10.1, Route Distinguis
 BGP routing table entry for mac-ip 0200.0000.01bb 192.168.10.1, Route Distinguisher: 10.1.1.2:10
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:55:aa:38:63:60
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:be:e5:5e:63:4c
       VNI: 1010 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0001
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:55:aa:38:63:60
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:be:e5:5e:63:4c
       VNI: 1010 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0001
 BGP routing table entry for mac-ip 0200.0000.02bb, Route Distinguisher: 10.1.1.1:10
  Paths: 1 available
@@ -1508,12 +1527,12 @@ BGP routing table entry for mac-ip 0200.0000.02bb, Route Distinguisher: 10.1.1.1
 BGP routing table entry for mac-ip 0200.0000.02bb, Route Distinguisher: 10.1.1.2:10
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan
       VNI: 1010 ESI: 0000:0000:0000:0000:0002
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan
       VNI: 1010 ESI: 0000:0000:0000:0000:0002
@@ -1527,110 +1546,98 @@ BGP routing table entry for mac-ip 0200.0000.02bb 192.168.10.2, Route Distinguis
 BGP routing table entry for mac-ip 0200.0000.02bb 192.168.10.2, Route Distinguisher: 10.1.1.2:10
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:55:aa:38:63:60
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:be:e5:5e:63:4c
       VNI: 1010 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0002
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:55:aa:38:63:60
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1010 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:be:e5:5e:63:4c
       VNI: 1010 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0002
 BGP routing table entry for mac-ip 0200.0000.03bb, Route Distinguisher: 10.1.1.2:20
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020 ESI: 0000:0000:0000:0000:0003
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020 ESI: 0000:0000:0000:0000:0003
 BGP routing table entry for mac-ip 0200.0000.03bb, Route Distinguisher: 10.1.1.3:20
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020 ESI: 0000:0000:0000:0000:0003
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020 ESI: 0000:0000:0000:0000:0003
 BGP routing table entry for mac-ip 0200.0000.03bb 192.168.20.3, Route Distinguisher: 10.1.1.2:20
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:55:aa:38:63:60
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:be:e5:5e:63:4c
       VNI: 1020 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0003
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:55:aa:38:63:60
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:be:e5:5e:63:4c
       VNI: 1020 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0003
 BGP routing table entry for mac-ip 0200.0000.03bb 192.168.20.3, Route Distinguisher: 10.1.1.3:20
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:fc:b9:4f:41:20
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:57:f4:b8:3a:f8
       VNI: 1020 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0003
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:fc:b9:4f:41:20
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:57:f4:b8:3a:f8
       VNI: 1020 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0003
-BGP routing table entry for mac-ip 0200.0000.04bb, Route Distinguisher: 10.1.1.2:20
- Paths: 2 available
-  65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
-      Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
-      Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
-      VNI: 1020 ESI: 0000:0000:0000:0000:0004
-  65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
-      Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
-      Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
-      VNI: 1020 ESI: 0000:0000:0000:0000:0004
 BGP routing table entry for mac-ip 0200.0000.04bb, Route Distinguisher: 10.1.1.3:20
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020 ESI: 0000:0000:0000:0000:0004
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
       Extended Community: Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan
       VNI: 1020 ESI: 0000:0000:0000:0000:0004
 BGP routing table entry for mac-ip 0200.0000.04bb 192.168.20.4, Route Distinguisher: 10.1.1.2:20
  Paths: 2 available
   65100 65002
-    10.1.1.2 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.2 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:55:aa:38:63:60
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:be:e5:5e:63:4c
       VNI: 1020 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0004
   65100 65002
-    10.1.1.2 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.2 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:55:aa:38:63:60
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:be:e5:5e:63:4c
       VNI: 1020 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0004
 BGP routing table entry for mac-ip 0200.0000.04bb 192.168.20.4, Route Distinguisher: 10.1.1.3:20
  Paths: 2 available
   65100 65003
-    10.1.1.3 from fe80::522e:8aff:fe07:b3f5%Et1 (10.1.0.1)
+    10.1.1.3 from fe80::527f:faff:fe31:f96a%Et1 (10.1.0.1)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP head, ECMP, best, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:fc:b9:4f:41:20
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:57:f4:b8:3a:f8
       VNI: 1020 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0004
   65100 65003
-    10.1.1.3 from fe80::5290:ceff:fec1:219%Et2 (10.1.0.2)
+    10.1.1.3 from fe80::5267:23ff:feeb:8403%Et2 (10.1.0.2)
       Origin IGP, metric -, localpref 100, weight 0, tag 0, valid, external, ECMP, ECMP contributor
-      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:fc:b9:4f:41:20
+      Extended Community: Route-Target-AS:1:1000 Route-Target-AS:1:1020 TunnelEncap:tunnelTypeVxlan EvpnRouterMac:50:57:f4:b8:3a:f8
       VNI: 1020 L3 VNI: 1000 ESI: 0000:0000:0000:0000:0004
 ```
 Подробный вывод для того, чтобы убедиться, что хосты у нас видны в своих ESI. И это так и есть - ESI у них не нулевой, а именно тот, которому принадлежат линки, которыми хосты подключены к нашим VTEP'ам. Что нам и нужно было увидеть.
@@ -1649,19 +1656,19 @@ EVPN instance: VLAN 10
   VXLAN: enabled
   MPLS: disabled
   Local ethernet segment:
-    ESI: 0000:0000:0000:0000:0002
-      Interface: Port-Channel2
-      Mode: all-active
-      State: up
-      ES-Import RT: 00:00:00:00:00:02
-      DF election algorithm: modulus
-      Designated forwarder: 10.1.1.1
-      Non-Designated forwarder: 10.1.1.2
     ESI: 0000:0000:0000:0000:0001
       Interface: Port-Channel1
       Mode: all-active
       State: up
       ES-Import RT: 00:00:00:00:00:01
+      DF election algorithm: modulus
+      Designated forwarder: 10.1.1.1
+      Non-Designated forwarder: 10.1.1.2
+    ESI: 0000:0000:0000:0000:0002
+      Interface: Port-Channel2
+      Mode: all-active
+      State: up
+      ES-Import RT: 00:00:00:00:00:02
       DF election algorithm: modulus
       Designated forwarder: 10.1.1.1
       Non-Designated forwarder: 10.1.1.2
@@ -1795,10 +1802,10 @@ BGP summary information for VRF default
 Router identifier 10.1.1.2, local AS number 65002
 Neighbor                               AS Session State AFI/SAFI                AFI/SAFI State   NLRI Rcd   NLRI Acc
 ----------------------------- ----------- ------------- ----------------------- -------------- ---------- ----------
-fe80::522e:8aff:fe07:b3f5%Et1       65100 Established   IPv4 Unicast            Negotiated              3          3
-fe80::522e:8aff:fe07:b3f5%Et1       65100 Established   L2VPN EVPN              Negotiated             22         22
-fe80::5290:ceff:fec1:219%Et2        65100 Established   IPv4 Unicast            Negotiated              3          3
-fe80::5290:ceff:fec1:219%Et2        65100 Established   L2VPN EVPN              Negotiated             22         22
+fe80::5267:23ff:feeb:8403%Et2       65100 Established   IPv4 Unicast            Negotiated              3          3
+fe80::5267:23ff:feeb:8403%Et2       65100 Established   L2VPN EVPN              Negotiated             22         22
+fe80::527f:faff:fe31:f96a%Et1       65100 Established   IPv4 Unicast            Negotiated              3          3
+fe80::527f:faff:fe31:f96a%Et1       65100 Established   L2VPN EVPN              Negotiated             22         22
 ```
 Сессии у нас установлены только со Spine-ами, в обоих AF - IPv4 Unicast и в L2VPN EVPN.
 
@@ -1838,7 +1845,7 @@ IMET-маршруты мы должны увидеть от каждого VTEP'
 VTEP'ы должны сгенерировать по одному маршруту RT-1 для каждого EVI И еще один RT-1 для Ethernet-сегмента (без привязки к EVI).
 
 ```
-Leaf-2#show bgp evpn route-type auto-discovery 
+Leaf-2#show bgp evpn route-type auto-discovery
 BGP routing table information for VRF default
 Router identifier 10.1.1.2, local AS number 65002
 Route status codes: * - valid, > - active, S - Stale, E - ECMP head, e - ECMP
@@ -1922,10 +1929,14 @@ AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Li
                                  10.1.1.1              -       100     0       65100 65001 i
  * >      RD: 10.1.1.2:1 ethernet-segment 0000:0000:0000:0000:0002 10.1.1.2
                                  -                     -       -       0       i
+ * >      RD: 10.1.1.2:1 ethernet-segment 0000:0000:0000:0000:0003 10.1.1.2
+                                 -                     -       -       0       i
  * >Ec    RD: 10.1.1.3:1 ethernet-segment 0000:0000:0000:0000:0003 10.1.1.3
                                  10.1.1.3              -       100     0       65100 65003 i
  *  ec    RD: 10.1.1.3:1 ethernet-segment 0000:0000:0000:0000:0003 10.1.1.3
                                  10.1.1.3              -       100     0       65100 65003 i
+ * >      RD: 10.1.1.2:1 ethernet-segment 0000:0000:0000:0000:0004 10.1.1.2
+                                 -                     -       -       0       i
  * >Ec    RD: 10.1.1.3:1 ethernet-segment 0000:0000:0000:0000:0004 10.1.1.3
                                  10.1.1.3              -       100     0       65100 65003 i
  *  ec    RD: 10.1.1.3:1 ethernet-segment 0000:0000:0000:0000:0004 10.1.1.3
@@ -1981,8 +1992,6 @@ AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Li
                                  10.1.1.3              -       100     0       65100 65003 i
  *  ec    RD: 10.1.1.3:20 mac-ip 0200.0000.03bb 192.168.20.3
                                  10.1.1.3              -       100     0       65100 65003 i
- * >      RD: 10.1.1.2:20 mac-ip 0200.0000.04bb
-                                 -                     -       -       0       i
  * >Ec    RD: 10.1.1.3:20 mac-ip 0200.0000.04bb
                                  10.1.1.3              -       100     0       65100 65003 i
  *  ec    RD: 10.1.1.3:20 mac-ip 0200.0000.04bb
@@ -2011,19 +2020,19 @@ EVPN instance: VLAN 10
   VXLAN: enabled
   MPLS: disabled
   Local ethernet segment:
-    ESI: 0000:0000:0000:0000:0001
-      Interface: Port-Channel1
-      Mode: all-active
-      State: up
-      ES-Import RT: 00:00:00:00:00:01
-      DF election algorithm: modulus
-      Designated forwarder: 10.1.1.1
-      Non-Designated forwarder: 10.1.1.2
     ESI: 0000:0000:0000:0000:0002
       Interface: Port-Channel2
       Mode: all-active
       State: up
       ES-Import RT: 00:00:00:00:00:02
+      DF election algorithm: modulus
+      Designated forwarder: 10.1.1.1
+      Non-Designated forwarder: 10.1.1.2
+    ESI: 0000:0000:0000:0000:0001
+      Interface: Port-Channel1
+      Mode: all-active
+      State: up
+      ES-Import RT: 00:00:00:00:00:01
       DF election algorithm: modulus
       Designated forwarder: 10.1.1.1
       Non-Designated forwarder: 10.1.1.2
@@ -2040,16 +2049,18 @@ EVPN instance: VLAN 20
       Interface: Port-Channel4
       Mode: all-active
       State: up
-      ES-Import RT: 
+      ES-Import RT: 00:00:00:00:00:04
       DF election algorithm: modulus
       Designated forwarder: 10.1.1.2
+      Non-Designated forwarder: 10.1.1.3
     ESI: 0000:0000:0000:0000:0003
       Interface: Port-Channel3
       Mode: all-active
       State: up
-      ES-Import RT: 
+      ES-Import RT: 00:00:00:00:00:03
       DF election algorithm: modulus
       Designated forwarder: 10.1.1.2
+      Non-Designated forwarder: 10.1.1.3
 ```
 Все выглядит хорошо.
 
@@ -2158,10 +2169,10 @@ BGP summary information for VRF default
 Router identifier 10.1.1.3, local AS number 65003
 Neighbor                               AS Session State AFI/SAFI                AFI/SAFI State   NLRI Rcd   NLRI Acc
 ----------------------------- ----------- ------------- ----------------------- -------------- ---------- ----------
-fe80::522e:8aff:fe07:b3f5%Et1       65100 Established   IPv4 Unicast            Negotiated              3          3
-fe80::522e:8aff:fe07:b3f5%Et1       65100 Established   L2VPN EVPN              Negotiated             32         32
-fe80::5290:ceff:fec1:219%Et2        65100 Established   IPv4 Unicast            Negotiated              3          3
-fe80::5290:ceff:fec1:219%Et2        65100 Established   L2VPN EVPN              Negotiated             32         32
+fe80::5267:23ff:feeb:8403%Et2       65100 Established   IPv4 Unicast            Negotiated              3          3
+fe80::5267:23ff:feeb:8403%Et2       65100 Established   L2VPN EVPN              Negotiated             32         32
+fe80::527f:faff:fe31:f96a%Et1       65100 Established   IPv4 Unicast            Negotiated              3          3
+fe80::527f:faff:fe31:f96a%Et1       65100 Established   L2VPN EVPN              Negotiated             32         32
 ```
 Сессии у нас установлены только со Spine-ами, в обоих AF - IPv4 Unicast и в L2VPN EVPN.
 
@@ -2299,8 +2310,16 @@ AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Li
                                  10.1.1.2              -       100     0       65100 65002 i
  *  ec    RD: 10.1.1.2:1 ethernet-segment 0000:0000:0000:0000:0002 10.1.1.2
                                  10.1.1.2              -       100     0       65100 65002 i
+ * >Ec    RD: 10.1.1.2:1 ethernet-segment 0000:0000:0000:0000:0003 10.1.1.2
+                                 10.1.1.2              -       100     0       65100 65002 i
+ *  ec    RD: 10.1.1.2:1 ethernet-segment 0000:0000:0000:0000:0003 10.1.1.2
+                                 10.1.1.2              -       100     0       65100 65002 i
  * >      RD: 10.1.1.3:1 ethernet-segment 0000:0000:0000:0000:0003 10.1.1.3
                                  -                     -       -       0       i
+ * >Ec    RD: 10.1.1.2:1 ethernet-segment 0000:0000:0000:0000:0004 10.1.1.2
+                                 10.1.1.2              -       100     0       65100 65002 i
+ *  ec    RD: 10.1.1.2:1 ethernet-segment 0000:0000:0000:0000:0004 10.1.1.2
+                                 10.1.1.2              -       100     0       65100 65002 i
  * >      RD: 10.1.1.3:1 ethernet-segment 0000:0000:0000:0000:0004 10.1.1.3
                                  -                     -       -       0       i
 ```
@@ -2362,10 +2381,6 @@ AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Li
                                  10.1.1.2              -       100     0       65100 65002 i
  * >      RD: 10.1.1.3:20 mac-ip 0200.0000.03bb 192.168.20.3
                                  -                     -       -       0       i
- * >Ec    RD: 10.1.1.2:20 mac-ip 0200.0000.04bb
-                                 10.1.1.2              -       100     0       65100 65002 i
- *  ec    RD: 10.1.1.2:20 mac-ip 0200.0000.04bb
-                                 10.1.1.2              -       100     0       65100 65002 i
  * >      RD: 10.1.1.3:20 mac-ip 0200.0000.04bb
                                  -                     -       -       0       i
  * >Ec    RD: 10.1.1.2:20 mac-ip 0200.0000.04bb 192.168.20.4
@@ -2374,10 +2389,6 @@ AS Path Attributes: Or-ID - Originator ID, C-LST - Cluster List, LL Nexthop - Li
                                  10.1.1.2              -       100     0       65100 65002 i
  * >      RD: 10.1.1.3:20 mac-ip 0200.0000.04bb 192.168.20.4
                                  -                     -       -       0       i
- * >Ec    RD: 10.1.1.2:20 mac-ip de61.70ba.1c3a
-                                 10.1.1.2              -       100     0       65100 65002 i
- *  ec    RD: 10.1.1.2:20 mac-ip de61.70ba.1c3a
-                                 10.1.1.2              -       100     0       65100 65002 i
 ```
 Всех хостов видим.
 
@@ -2396,20 +2407,22 @@ EVPN instance: VLAN 20
   VXLAN: enabled
   MPLS: disabled
   Local ethernet segment:
-    ESI: 0000:0000:0000:0000:0004
-      Interface: Port-Channel4
-      Mode: all-active
-      State: up
-      ES-Import RT: 00:00:00:00:00:04
-      DF election algorithm: modulus
-      Designated forwarder: 10.1.1.3
     ESI: 0000:0000:0000:0000:0003
       Interface: Port-Channel3
       Mode: all-active
       State: up
       ES-Import RT: 00:00:00:00:00:03
       DF election algorithm: modulus
-      Designated forwarder: 10.1.1.3
+      Designated forwarder: 10.1.1.2
+      Non-Designated forwarder: 10.1.1.3
+    ESI: 0000:0000:0000:0000:0004
+      Interface: Port-Channel4
+      Mode: all-active
+      State: up
+      ES-Import RT: 00:00:00:00:00:04
+      DF election algorithm: modulus
+      Designated forwarder: 10.1.1.2
+      Non-Designated forwarder: 10.1.1.3
 ```
 Все выглядит хорошо.
 
