@@ -776,6 +776,7 @@ interface Port-Channel3
    !
    evpn ethernet-segment
       identifier 0000:0000:0000:0000:0003
+      route-target import 00:00:00:00:00:03
    lacp system-id 02aa.aaaa.0003
 !
 interface Port-Channel4
@@ -784,6 +785,7 @@ interface Port-Channel4
    !
    evpn ethernet-segment
       identifier 0000:0000:0000:0000:0004
+      route-target import 00:00:00:00:00:04
    lacp system-id 02aa.aaaa.0004
 !
 interface Ethernet1
