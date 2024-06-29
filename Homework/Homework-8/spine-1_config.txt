@@ -1,0 +1,77 @@
+Spine-1#show run
+! Command: show running-config
+! device: Spine-1 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname Spine-1
+!
+spanning-tree mode mstp
+!
+interface Ethernet1
+   description Link_to_Leaf-1
+   no switchport
+   ipv6 enable
+!
+interface Ethernet2
+   description Link_to_Leaf-2
+   no switchport
+   ipv6 enable
+!
+interface Ethernet3
+   description Link_to_Leaf-3
+   no switchport
+   ipv6 enable
+!
+interface Ethernet4
+   shutdown
+!
+interface Ethernet5
+   shutdown
+!
+interface Ethernet6
+   shutdown
+!
+interface Ethernet7
+   shutdown
+!
+interface Loopback0
+   ip address 10.1.0.1/32
+!
+interface Management1
+!
+ip routing ipv6 interfaces 
+!
+ipv6 unicast-routing
+!
+route-map BGP_REDISTRIBUTE_CONNECTED permit 10
+   match interface Loopback0
+!
+peer-filter LEAFS
+   10 match as-range 65001-65006 result accept
+!
+router bgp 65100
+   maximum-paths 64
+   neighbor CLOS peer group
+   neighbor CLOS out-delay 0
+   neighbor CLOS bfd
+   neighbor CLOS timers 3 9
+   neighbor CLOS password 7 iKK9MJny2I0=
+   neighbor CLOS send-community extended
+   redistribute connected route-map BGP_REDISTRIBUTE_CONNECTED
+   neighbor interface Et1-6 peer-group CLOS peer-filter LEAFS
+   !
+   address-family evpn
+      neighbor CLOS activate
+   !
+   address-family ipv4
+      neighbor CLOS activate
+      neighbor CLOS next-hop address-family ipv6 originate
+!
+end

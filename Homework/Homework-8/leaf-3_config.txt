@@ -1,0 +1,188 @@
+! Command: show running-config
+! device: Leaf-3 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname Leaf-3
+!
+spanning-tree mode mstp
+!
+vlan 30
+   name Clients_30
+!
+vlan 40
+   name Clients_40
+!
+vrf instance VRF1
+!
+vrf instance VRF2
+!
+interface Port-Channel3
+   description Link_to_Client-3
+   switchport access vlan 30
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0000:0003
+      route-target import 00:00:00:00:00:03
+   lacp system-id 02aa.aaaa.0003
+!
+interface Port-Channel4
+   description Link_to_Client-4
+   switchport access vlan 40
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0000:0000:0004
+      route-target import 00:00:00:00:00:04
+   lacp system-id 02aa.aaaa.0004
+!
+interface Ethernet1
+   description Link_to_Spine-1
+   no switchport
+   ipv6 enable
+!
+interface Ethernet2
+   description Link_to_Spine-2
+   no switchport
+   ipv6 enable
+!
+interface Ethernet3
+   description Link_to_GW1_for_VRF1
+   no switchport
+   vrf VRF1
+   ip address 10.99.1.2/30
+!
+interface Ethernet4
+   description Link_to_GW1_for_VRF2
+   no switchport
+   vrf VRF2
+   ip address 10.99.2.2/30
+!
+interface Ethernet5
+   description Link_to_Client-3
+   channel-group 3 mode active
+!
+interface Ethernet6
+   description Link_to_Client-4
+   channel-group 4 mode active
+!
+interface Ethernet7
+   shutdown
+!
+interface Loopback0
+   ip address 10.1.1.3/32
+!
+interface Management1
+!
+interface Vlan30
+   vrf VRF2
+   ip address virtual 10.102.30.254/24
+!
+interface Vlan40
+   vrf VRF2
+   ip address virtual 10.102.40.254/24
+!
+interface Vxlan1
+   vxlan source-interface Loopback0
+   vxlan udp-port 4789
+   vxlan vlan 30 vni 2030
+   vxlan vlan 40 vni 2040
+   vxlan vrf VRF1 vni 1000
+   vxlan vrf VRF2 vni 2000
+!
+ip virtual-router mac-address 02:aa:aa:aa:aa:aa
+!
+ip routing ipv6 interfaces 
+ip routing vrf VRF1
+ip routing vrf VRF2
+!
+ip prefix-list NO_HOST_ROUTES
+   seq 10 permit 0.0.0.0/0 le 31
+!
+ipv6 unicast-routing
+!
+route-map BGP_REDISTRIBUTE_CONNECTED permit 10
+   match interface Loopback0
+!
+route-map REDISTRIBUTE_TO_GW deny 10
+   match interface Ethernet3
+!
+route-map REDISTRIBUTE_TO_GW deny 20
+   match interface Ethernet4
+!
+route-map REDISTRIBUTE_TO_GW permit 30
+   match ip address prefix-list NO_HOST_ROUTES
+!
+route-map VRF2_REDISTRIBUTE_CONNECTED deny 10
+   match interface Ethernet4
+!
+route-map VRF2_REDISTRIBUTE_CONNECTED permit 20
+!
+router bgp 65003
+   maximum-paths 64
+   neighbor CLOS peer group
+   neighbor CLOS out-delay 0
+   neighbor CLOS bfd
+   neighbor CLOS timers 3 9
+   neighbor CLOS password 7 iKK9MJny2I0=
+   neighbor CLOS send-community extended
+   redistribute connected route-map BGP_REDISTRIBUTE_CONNECTED
+   neighbor interface Et1-2 peer-group CLOS remote-as 65100
+   !
+   vlan 30
+      rd auto
+      route-target both 1:2030
+      redistribute learned
+   !
+   vlan 40
+      rd auto
+      route-target both 1:2040
+      redistribute learned
+   !
+   address-family evpn
+      no bgp next-hop-unchanged
+      neighbor CLOS activate
+   !
+   address-family ipv4
+      neighbor CLOS activate
+      neighbor CLOS next-hop address-family ipv6 originate
+   !
+   vrf VRF1
+      rd 10.1.1.3:1000
+      route-target import evpn 1:1000
+      route-target export evpn 1:1000
+      router-id 10.1.1.3
+      neighbor 10.99.1.1 remote-as 65099
+      neighbor 10.99.1.1 out-delay 0
+      neighbor 10.99.1.1 bfd
+      neighbor 10.99.1.1 description GW-1
+      neighbor 10.99.1.1 timers 3 9
+      neighbor 10.99.1.1 password 7 bH5mAS4rEAU=
+      !
+      address-family ipv4
+         neighbor 10.99.1.1 activate
+         neighbor 10.99.1.1 route-map REDISTRIBUTE_TO_GW out
+   !
+   vrf VRF2
+      rd 10.1.1.3:2000
+      route-target import evpn 1:2000
+      route-target export evpn 1:2000
+      router-id 10.1.1.3
+      neighbor 10.99.2.1 remote-as 65099
+      neighbor 10.99.2.1 out-delay 0
+      neighbor 10.99.2.1 bfd
+      neighbor 10.99.2.1 description GW-1
+      neighbor 10.99.2.1 timers 3 9
+      neighbor 10.99.2.1 password 7 4c+vExs5CVY=
+      redistribute connected route-map VRF2_REDISTRIBUTE_CONNECTED
+      !
+      address-family ipv4
+         neighbor 10.99.2.1 activate
+         neighbor 10.99.2.1 route-map REDISTRIBUTE_TO_GW out
+!
+end
