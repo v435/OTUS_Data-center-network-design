@@ -1230,7 +1230,7 @@ GW-1(config)# ip prefix-list VRF1_CLIENT_NETS seq 5 permit 10.101.0.0/16 le 24
 GW-1(config)# ip prefix-list VRF2_CLIENT_NETS seq 5 permit 10.102.0.0/16 le 24
 ```
 
-Создадим оба VRF в конфигурации FRR. Вообще, по идее, он должен автоматически распознавать созданные VRF в системе, но у меня этот механизм не всегда работал стабильно. Лучше их явно указать.
+Создадим оба VRF в конфигурации FRR. Вообще, по идее, он должен автоматически распознавать VRF, которые были созданы в системе, но у меня этот механизм почему-то не всегда работал стабильно. Лучше их явно указать.
 ```
 GW-1(config)# vrf VRF1
 GW-1(config)# vrf VRF2
@@ -2660,7 +2660,7 @@ PING 10.102.30.3 (10.102.30.3): 56 data bytes
 3 packets transmitted, 3 packets received, 0% packet loss
 round-trip min/avg/max = 21.129/24.383/30.568 ms
 ```
-ping Client-4 (inter-VNI)
+ping Client-4 (inter-VRF)
 ```
 Client-1:~# ping 10.102.40.4 -c 3
 PING 10.102.40.4 (10.102.40.4): 56 data bytes
@@ -2706,7 +2706,7 @@ PING 10.102.30.3 (10.102.30.3): 56 data bytes
 3 packets transmitted, 3 packets received, 0% packet loss
 round-trip min/avg/max = 18.108/19.435/21.530 ms
 ```
-ping Client-4 (inter-VNI)
+ping Client-4 (inter-VRF)
 ```
 Client-2:~# ping 10.102.40.4 -c 3
 PING 10.102.40.4 (10.102.40.4): 56 data bytes
