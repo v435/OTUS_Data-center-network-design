@@ -1,5 +1,5 @@
 # Топология и IP-план
-([назад](../README.md))
+([назад](../Final/README.md))
 
 В качестве самого первого шага, еще раз взглянем на топологию и набросаем какой-то IP-план, которого мы будем придерживаться :).
 ![topology_intro.drawio.png](attachments/topology_intro.drawio.png)
