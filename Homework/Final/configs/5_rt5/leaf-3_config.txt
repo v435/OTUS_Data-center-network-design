@@ -1,0 +1,147 @@
+! Command: show running-config
+! device: Leaf-3 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname Leaf-3
+!
+spanning-tree mode mstp
+!
+vlan 30,40
+!
+vrf instance VRF1
+!
+vrf instance VRF2
+!
+interface Ethernet1
+   description Link_to_Spine-1
+   no switchport
+   ipv6 enable
+!
+interface Ethernet2
+   description Link_to_Spine-2
+   no switchport
+   ipv6 enable
+!
+interface Ethernet3
+   description Link_to_Client-3
+   switchport access vlan 30
+!
+interface Ethernet4
+   description Link_to_Client-4
+   switchport access vlan 40
+!
+interface Ethernet5
+   description Link_to_GW1_for_VRF1
+   no switchport
+   vrf VRF1
+   ip address 10.99.1.1/24
+!
+interface Ethernet6
+   description Link_to_GW1_for_VRF2
+   no switchport
+   vrf VRF2
+   ip address 10.99.2.1/24
+!
+interface Ethernet7
+   shutdown
+!
+interface Loopback0
+   ip address 10.1.1.3/32
+!
+interface Management1
+!
+interface Vlan30
+   vrf VRF2
+   ip address virtual 192.168.30.254/24
+!
+interface Vlan40
+   vrf VRF2
+   ip address virtual 192.168.40.254/24
+!
+interface Vxlan1
+   vxlan source-interface Loopback0
+   vxlan udp-port 4789
+   vxlan vlan 30 vni 1030
+   vxlan vlan 40 vni 1040
+   vxlan vrf VRF1 vni 10001
+   vxlan vrf VRF2 vni 10002
+!
+ip virtual-router mac-address 02:00:00:00:00:00
+!
+ip routing ipv6 interfaces
+ip routing vrf VRF1
+ip routing vrf VRF2
+!
+ip prefix-list HOST_ROUTES
+   seq 10 permit 0.0.0.0/0 ge 32
+!
+ipv6 unicast-routing
+!
+route-map BGP_REDISTRIBUTE_CONNECTED permit 10
+   match interface Loopback0
+!
+route-map SEND_TO_GW deny 10
+   match ip address prefix-list HOST_ROUTES
+!
+route-map SEND_TO_GW permit 20
+!
+router bgp 65003
+   maximum-paths 64
+   neighbor CLOS peer group
+   neighbor CLOS out-delay 0
+   neighbor CLOS bfd
+   neighbor CLOS timers 3 9
+   neighbor CLOS password 7 iKK9MJny2I0=
+   neighbor CLOS send-community extended
+   neighbor GW-1 peer group CLOS
+   neighbor GW-1 remote-as 65099
+   neighbor GW-1 route-map SEND_TO_GW out
+   redistribute connected route-map BGP_REDISTRIBUTE_CONNECTED
+   neighbor interface Et1-2 peer-group CLOS remote-as 65100
+   !
+   vlan 30
+      rd auto
+      route-target both 1:1030
+      redistribute learned
+   !
+   vlan 40
+      rd auto
+      route-target both 1:1040
+      redistribute learned
+   !
+   address-family evpn
+      neighbor CLOS activate
+   !
+   address-family ipv4
+      neighbor CLOS activate
+      neighbor CLOS next-hop address-family ipv6 originate
+      neighbor GW-1 activate
+   !
+   vrf VRF1
+      rd 10.1.1.3:10001
+      route-target import evpn 1:10001
+      route-target export evpn 1:10001
+      router-id 10.1.1.3
+      neighbor 10.99.1.2 peer group GW-1
+      !
+      address-family ipv4
+         redistribute connected
+   !
+   vrf VRF2
+      rd 10.1.1.3:10002
+      route-target import evpn 1:10002
+      route-target export evpn 1:10002
+      router-id 10.1.1.3
+      neighbor 10.99.2.2 peer group GW-1
+      !
+      address-family ipv4
+         redistribute connected
+!
+end

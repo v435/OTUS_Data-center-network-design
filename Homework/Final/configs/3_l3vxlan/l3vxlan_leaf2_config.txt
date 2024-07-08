@@ -1,0 +1,100 @@
+! Command: show running-config
+! device: Leaf-2 (vEOS-lab, EOS-4.29.2F)
+!
+! boot system flash:/vEOS-lab.swi
+!
+no aaa root
+!
+transceiver qsfp default-mode 4x10G
+!
+service routing protocols model multi-agent
+!
+hostname Leaf-2
+!
+spanning-tree mode mstp
+!
+vlan 102
+   name Clients_102
+!
+vrf instance VRF1
+!
+interface Ethernet1
+   description Link_to_Spine-1
+   no switchport
+   ipv6 enable
+!
+interface Ethernet2
+   description Link_to_Spine-2
+   no switchport
+   ipv6 enable
+!
+interface Ethernet3
+   description Link_to_Client-2
+   switchport access vlan 102
+!
+interface Ethernet4
+   shutdown
+!
+interface Ethernet5
+   shutdown
+!
+interface Ethernet6
+   shutdown
+!
+interface Ethernet7
+   shutdown
+!
+interface Loopback0
+   ip address 10.1.1.2/32
+!
+interface Management1
+!
+interface Vlan102
+   vrf VRF1
+   ip address virtual 192.168.102.254/24
+!
+interface Vxlan1
+   vxlan source-interface Loopback0
+   vxlan udp-port 4789
+   vxlan vlan 102 vni 1102
+   vxlan vrf VRF1 vni 1100
+!
+ip virtual-router mac-address 02:00:00:00:00:00
+!
+ip routing ipv6 interfaces
+ip routing vrf VRF1
+!
+ipv6 unicast-routing
+!
+route-map BGP_REDISTRIBUTE_CONNECTED permit 10
+   match interface Loopback0
+!
+router bgp 65002
+   maximum-paths 64
+   neighbor CLOS peer group
+   neighbor CLOS out-delay 0
+   neighbor CLOS bfd
+   neighbor CLOS timers 3 9
+   neighbor CLOS password 7 iKK9MJny2I0=
+   neighbor CLOS send-community extended
+   redistribute connected route-map BGP_REDISTRIBUTE_CONNECTED
+   neighbor interface Et1-2 peer-group CLOS remote-as 65100
+   !
+   vlan 102
+      rd auto
+      route-target both 100:1102
+      redistribute learned
+   !
+   address-family evpn
+      neighbor CLOS activate
+   !
+   address-family ipv4
+      neighbor CLOS activate
+      neighbor CLOS next-hop address-family ipv6 originate
+   !
+   vrf VRF1
+      rd 10.1.1.2:1100
+      route-target import evpn 100:1100
+      route-target export evpn 100:1100
+!
+end
